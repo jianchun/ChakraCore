@@ -1,8 +1,8 @@
 var cli = require('command-line-args')([
     {
-        name: 'dir',  alias: 'd',
-        description: 'directories to look for sources',
-        type: String, multiple: true, defaultOption: true
+        name: 'test',  alias: 't',
+        description: 'test only, do not rename',
+        type: Boolean
     },
     {
         name: '?', alias: '?',
@@ -12,7 +12,8 @@ var cli = require('command-line-args')([
 ]);
 
 var description = {
-    description: 'rename dirs/files to CamelCase'
+    description: 'rename dirs/files to CamelCase',
+    examples: ['find . | node [path]case/index.js' ]
 };
 
 var options;
@@ -28,3 +29,14 @@ if (options["?"]) {
     process.exit(0);
 }
 
+var transform = require('./case.js');
+process.stdin.pipe(require('split')()).on('data', line => {
+    var result = transform(line);
+    if (result != line) {
+        if (options.test) {
+            console.log(line, "\t", result);
+        } else {
+            // mv
+        }
+    }
+});
