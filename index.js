@@ -5,11 +5,6 @@ var cli = require('command-line-args')([
         type: Boolean
     },
     {
-        name: 'filenameOnly', alias: 'f',
-        description: '(when test) display filename changes only',
-        type: Boolean, defaultValue: true
-    },
-    {
         name: '?', alias: '?',
         description: 'show usage',
         type: Boolean
@@ -35,40 +30,48 @@ if (options["?"]) {
 }
 
 var fs = require('fs');
+var path = require('path');
 var shell = require('shelljs');
+var sprintf = require('sprintf');
+
 function rename(oldPath, newPath) {
-    var i = newPath.lastIndexOf('/');
-    if (i >= 0) {
-        var dir = newPath.substr(0, i);
+    var dir = path.dirname(newPath);
+    if (dir.length > 0) {
         shell.mkdir('-p', dir);
     }
 
     fs.renameSync(oldPath, newPath);
 }
 
-function filenameOf(path) {
-    var i = path.lastIndexOf('/');
-    return i >= 0 ? path.substr(i + 1) : path;
-}
-
 var transform = require('./case.js');
+var lastDir;
 process.stdin.pipe(require('split')()).on('data', line => {
     if (line.length == 0 || !fs.lstatSync(line).isFile()) {
         return; // skip dirs
     }
 
     var result = transform(line);
+
     if (result != line) {
-        if (options.test) {
-            if (options.filenameOnly) {
-                line = filenameOf(line);
-                result = filenameOf(result);
+        var oldName = path.basename(line);
+        var newName = path.basename(result);
+        if (oldName != newName) {
+            var oldDir = path.dirname(line);
+            if (oldDir != lastDir) {
+                if (lastDir) {
+                    console.log();
+                }
+                console.log(oldDir, "\t=>\t", path.dirname(result));
+                console.log();
+                lastDir = oldDir;
             }
-            if (result != line) {
-                console.log(line, "\t", result);
-            }
-        } else {
+
+            console.log(sprintf("\t%-20s\t%-20s", oldName, newName));
+        }
+
+        if (!options.test) {
             rename(line, result);
         }
     }
 });
+
