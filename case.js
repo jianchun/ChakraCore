@@ -34,34 +34,58 @@ var knownWords = [
     'set', 'assert', 'impl', 'assertions', 'library', 'types', 'warnings', 'basic',
     'node', 'linear', 'flow', 'scan', 'liveness', 'glob', 'debug', 'layout', 'bail',
     'queued', 'full', 'jit', 'work', 'item', 'opt', 'expr', 'op', 'code', 'jn',
-    'does', 'matter', 'range', 'lower', 'simd', 'native', 'inlining', 'decider', 'peeps',
+    'does', 'matter', 'range', 'lower', 'native', 'inlining', 'decider', 'peeps',
     'emit', 'emitter', 'interpreter', 'thunk', 'pre', 'kind', 'inline', 'bounds', 'agen',
     'lifetime', 'generator', 'profiling', 'viewer', 'sym', 'switch', 'helpers', 'shared',
     'reg', 'encoder', 'lowerer', 'encode', 'arch', 'backward', 'inlinee',
     'pass', 'prolog', 'allocators', 'assembly', 'step', 'legalize', 'unwind', 'codes',
-    'thunks', 'opcodes', 'attr', 'opnd', 'fields', 'region', 'db', 'post', 'relative',
+    'thunks', 'attr', 'opnd', 'fields', 'region', 'db', 'post', 'relative',
     'heuristics', 'security', 'temp', 'tracker', 'constant', 'induction', 'variable',
     'func', 'jsrt', 'exports', 'runtime', 'source', 'hooks', 'rt',
     'errors', 'writer', 'pattern', 'char', 'trie',
     'classifier', 'formals', 'insensitive', 'standard', 'octoquad', 'identifier',
-    'chars', 'compile', 'background', 'textbook', 'boyer', 'moore', 'contcodes'
+    'chars', 'compile', 'background', 'textbook', 'boyer', 'moore', 'contcodes',
+    'detached', 'language', 'dynamic', 'mutator', 'utils', 'loop', 'ops',
+    'javascript', 'conversion', 'recyclable', 'function', 'arg', 'index',
+    'float', 'storage', 'pointer', 'handler', 'bool', 'uint', 'link',
+    'instruction', 'int32x4', 'int16x8', 'uint16x8', '32x4', '8x16', '64x2', '16x8',
+    'uint32x4', 'names', 'arguments', 'module', 'tagged', 'walker',
+    'execution', 'mode', 'modes', 'optimization', 'override', 'body', 'expirable',
+    'read', 'only', 'process', 'windows', 'globalization', 'adapter',
+    'foundation', 'property', 'cross', 'site', 'leave', 'sink', 'hint', 'profiler',
+    'hi', 'res', 'record', 'entropy', 'call', 'descriptions', 'prober', 'direct',
+    'diag', 'probe', 'document', 'breakpoint', 'debugging', 'mutation',
+    'bound', 'model', 'container', 'constructor', 'null', 'literal',
+    'implementation', 'or', 'single', 'timer', 'iterator', 'intl', 'extension',
+    'engine', 'interface', 'boolean', 'concat', 'typed', 'regular', 'expression',
+    'snapshot', 'result', 'functions', 'same', 'scanner', 'view', 'copy',
+    'promise', 'variant', 'non', 'reflect', 'segment', 'sub', 'built', 'in', 'ins',
+    'global', 'uri', 'deferred', 'deserialization', 'deserialize', 'parsing',
+    'host', 'tag', 'entries', 'proxy', 'prototype', 'slot', 'accessor',
+    'for', 'compound', 'extended', 'statement', 'serializer', 'var', 'reader',
+    'count', 'layouts', 'scope', 'release', 'aux', 'spread', 'missing', 'static',
+    'version', 'argument', 'edge', 'descriptor', 'activation', 'path',
+    'unordered', 'with', 'ranges', 'crt', 'serializable'
 ];
 
 // Known words to be in upper case
 var knownUpperCaseWords = [
-    'id', 'cfg', 'fpu', 'i', 'x', 'ir', 'scc', 'a', 'p'
+    'id', 'cfg', 'fpu', 'i', 'x', 'ir', 'scc', 'a', 'p', 'simd', 'tls', 'json',
+    'es5', 'wp', 'sse2'
 ];
 
 // Reserved words to remain unchanged
 var reservedWords = [
     'vtinfo', 'vtregistry', 'vcxproj', 'arm', 'arm64', 'amd64',
-    '_GET_CURRENT_FRAME', 'UInt16', 'UInt32', 'SList', 'DList', 'quicksort', 'vpm',
-    '_SAVE_REGISTERS', 'FILE', 'inl', '_strtod', 'api', 'API', 'Api', '32b', '64b',
+    'UInt16', 'UInt32', 'SList', 'DList', 'quicksort', 'vpm',
+    'FILE', 'inl', 'strtod', 'api', 'API', 'Api', '32b', '64b',
     '128', 'i386', '86', '64', 'md', 'MD', 'Md', 'ARM',
-    'kwd-lsc', 'kwd-sw', 'kwds_sw', 'globals', 'keywords', 'cmperr', 'idiom', 'ptree',
+    'kwd-lsc', 'kwd', 'kwds', 'sw', 'globals', 'keywords', 'cmperr', 'idiom', 'ptree',
     'ptlist', 'pnodediff', 'CharSet', 'tokens', 'errstr', 'screrror',
     'pnodechange', 'pnodewalk', 'pnodevisit', 'jserr', 'objnames', 'kwds_sw-nocolor',
-    'rterrors_limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', 'rterrors',
+    'rterrors', 'limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', '-nocolor',
+    'EHBailoutData', 'CharString', 'EhFrame', 'bc', 'CodeSerializer', 'CodeSerialize',
+    'RegExp', 'RegexParser', 'RegexPattern', 'TypeId', 'PropertyId',
 ];
 
 function toCamelCase(word) {
@@ -107,9 +131,9 @@ function transformName(name) {
         return name;
     }
 
-    // if (name == toCamelCase(name)) {
-    //     return name; // ignore if already camel case
-    // }
+    if (name == name.toUpperCase()) {
+        return name;
+    }
 
     for (var len = name.length; len > 0; len--) {
         var part = name.substr(0, len);
@@ -132,7 +156,9 @@ module.exports = function(path) {
         var bare = path.substr(0, len);
         var ext = path.substr(len);
         return bare.split('/').map(name =>
-            name.split('.').map(part => transformName(part)).join('.')
+            name.split('.').map(part =>
+                    part.split('_').map(word => transformName(word)).join('_')
+                ).join('.')
         ).join('/') + ext;
     } catch(ex) {
         throw new Error(path + ", " + ex.message);

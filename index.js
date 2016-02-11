@@ -70,14 +70,14 @@ process.stdin.pipe(require('split')()).on('data', line => {
             var oldDir = path.dirname(line);
             if (oldDir != lastDir) {
                 if (lastDir) {
-                    console.log();
+                    console.log("\n");
                 }
-                console.log(oldDir, "\t=>\t", path.dirname(result));
+                console.log(sprintf("%-35s =>  %s", oldDir, path.dirname(result)));
                 console.log();
                 lastDir = oldDir;
             }
 
-            console.log(sprintf("\t%-30s\t%-30s", oldName, newName));
+            console.log(sprintf("     %-35s     %s", oldName, newName));
         }
 
         if (!options.test) {
