@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "command-line-args": "^2.1.4",
+    "shelljs": "^0.6.0",
     "split": "^1.0.0"
   },
   "devDependencies": {},
