@@ -32,12 +32,21 @@ var knownWords = [
     'tree', 'check', 'throw', 'banned', 'pool', 'sweep', 'operators', 'context',
     'declarations', 'constants', 'output', 'typedefs', 'max', 'parser', 'instrument',
     'set', 'assert', 'impl', 'assertions', 'library', 'types', 'warnings', 'basic',
-
+    'node', 'linear', 'flow', 'scan', 'liveness', 'glob', 'debug', 'layout', 'bail',
+    'queued', 'full', 'jit', 'work', 'item', 'opt', 'expr', 'op', 'code', 'jn',
+    'does', 'matter', 'range', 'lower', 'simd', 'native', 'inlining', 'decider', 'peeps',
+    'emit', 'emitter', 'interpreter', 'thunk', 'pre', 'kind', 'inline', 'bounds', 'agen',
+    'lifetime', 'generator', 'profiling', 'viewer', 'sym', 'switch', 'helpers', 'shared',
+    'reg', 'encoder', 'lowerer', 'encode', 'arch', 'backward', 'inlinee',
+    'pass', 'prolog', 'allocators', 'assembly', 'step', 'legalize', 'unwind', 'codes',
+    'thunks', 'opcodes', 'attr', 'opnd', 'fields', 'region', 'db', 'post', 'relative',
+    'heuristics', 'security', 'temp', 'tracker', 'constant', 'induction', 'variable',
+    'func', 'jsrt', 'exports', 'runtime', 'source', 'hooks', 'rt'
 ];
 
 // Known words to be in upper case
 var knownUpperCaseWords = [
-    'id', 'cfg', 'fpu', 'i', 'x'
+    'id', 'cfg', 'fpu', 'i', 'x', 'ir', 'scc', 'a', 'p'
 ];
 
 // Reserved words to remain unchanged
@@ -45,6 +54,7 @@ var reservedWords = [
     'vtinfo', 'vtregistry', 'vcxproj', 'arm', 'arm64', 'amd64',
     '_GET_CURRENT_FRAME', 'UInt16', 'UInt32', 'SList', 'DList', 'quicksort', 'vpm',
     '_SAVE_REGISTERS', 'FILE', 'inl', '_strtod', 'api', 'API', 'Api', '32b', '64b',
+    '128', 'i386', '86', '64', 'md', 'MD', 'Md', 'ARM',
 ];
 
 function toCamelCase(word) {

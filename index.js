@@ -45,12 +45,23 @@ function rename(oldPath, newPath) {
 
 var transform = require('./case.js');
 var lastDir;
+var errors = [];
 process.stdin.pipe(require('split')()).on('data', line => {
     if (line.length == 0 || !fs.lstatSync(line).isFile()) {
         return; // skip dirs
     }
 
-    var result = transform(line);
+    var result;
+    try {
+        result = transform(line);
+    } catch(ex) {
+        if (errors.length < 20) {
+            errors.push(ex.message);
+            result = line;
+        } else {
+            process.exit(-1);
+        }
+    }
 
     if (result != line) {
         var oldName = path.basename(line);
@@ -66,7 +77,7 @@ process.stdin.pipe(require('split')()).on('data', line => {
                 lastDir = oldDir;
             }
 
-            console.log(sprintf("\t%-20s\t%-20s", oldName, newName));
+            console.log(sprintf("\t%-30s\t%-30s", oldName, newName));
         }
 
         if (!options.test) {
@@ -75,3 +86,6 @@ process.stdin.pipe(require('split')()).on('data', line => {
     }
 });
 
+process.on("exit", ()=> {
+    errors.forEach((e) => console.log(e));
+});
