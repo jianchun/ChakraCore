@@ -65,7 +65,7 @@ var knownWords = [
     'for', 'compound', 'extended', 'statement', 'serializer', 'var', 'reader',
     'count', 'layouts', 'scope', 'release', 'aux', 'spread', 'missing', 'static',
     'version', 'argument', 'edge', 'descriptor', 'activation', 'path',
-    'unordered', 'with', 'ranges', 'crt', 'serializable'
+    'unordered', 'with', 'ranges', 'crt', 'serializable', 'inl'
 ];
 
 // Known words to be in upper case
@@ -78,13 +78,13 @@ var knownUpperCaseWords = [
 var reservedWords = [
     'vtinfo', 'vtregistry', 'vcxproj', 'arm', 'arm64', 'amd64',
     'UInt16', 'UInt32', 'SList', 'DList', 'quicksort', 'vpm',
-    'FILE', 'inl', 'strtod', 'api', 'API', 'Api', '32b', '64b',
+    'FILE', 'strtod', 'api', 'API', 'Api', '32b', '64b',
     '128', 'i386', '86', '64', 'md', 'MD', 'Md', 'ARM',
     'kwd-lsc', 'kwd', 'kwds', 'sw', 'globals', 'keywords', 'cmperr', 'idiom', 'ptree',
     'ptlist', 'pnodediff', 'CharSet', 'tokens', 'errstr', 'screrror',
     'pnodechange', 'pnodewalk', 'pnodevisit', 'jserr', 'objnames', 'kwds_sw-nocolor',
     'rterrors', 'limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', '-nocolor',
-    'EHBailoutData', 'CharString', 'EhFrame', 'bc', 'CodeSerializer', 'CodeSerialize',
+    'EHBailoutData', 'CharString', 'EhFrame', 'CodeSerializer', 'CodeSerialize',
     'RegExp', 'RegexParser', 'RegexPattern', 'TypeId', 'PropertyId',
 ];
 
@@ -146,21 +146,29 @@ function transformName(name) {
     throw new Error("don't know how to transform: " + name);
 }
 
-module.exports = function(path) {
-    try {
-        var len = path.lastIndexOf('.');
-        if (len < 0) {
-            len = path.length;
-        }
+var path = require('path');
+var extraExtensions = [ /\.js\..*/, /\.vcxproj\..*/ ];
 
-        var bare = path.substr(0, len);
-        var ext = path.substr(len);
+module.exports = function(p) {
+    var ext = path.extname(p);
+    if (ext.length > 0) {
+        extraExtensions.forEach(e => {
+            var i = p.search(e);
+            if (i >= 0) {
+                ext = p.substr(i);
+            }
+        });
+    }
+
+    var bare = p.substr(0, p.length - ext.length);
+
+    try {
         return bare.split('/').map(name =>
             name.split('.').map(part =>
-                    part.split('_').map(word => transformName(word)).join('_')
-                ).join('.')
+                part.split('_').map(word => transformName(word)).join('_')
+            ).join('.')
         ).join('/') + ext;
     } catch(ex) {
-        throw new Error(path + ", " + ex.message);
+        throw new Error(p + ", " + ex.message);
     }
 }
