@@ -41,7 +41,10 @@ var knownWords = [
     'pass', 'prolog', 'allocators', 'assembly', 'step', 'legalize', 'unwind', 'codes',
     'thunks', 'opcodes', 'attr', 'opnd', 'fields', 'region', 'db', 'post', 'relative',
     'heuristics', 'security', 'temp', 'tracker', 'constant', 'induction', 'variable',
-    'func', 'jsrt', 'exports', 'runtime', 'source', 'hooks', 'rt'
+    'func', 'jsrt', 'exports', 'runtime', 'source', 'hooks', 'rt',
+    'errors', 'writer', 'pattern', 'char', 'trie',
+    'classifier', 'formals', 'insensitive', 'standard', 'octoquad', 'identifier',
+    'chars', 'compile', 'background', 'textbook', 'boyer', 'moore', 'contcodes'
 ];
 
 // Known words to be in upper case
@@ -55,6 +58,10 @@ var reservedWords = [
     '_GET_CURRENT_FRAME', 'UInt16', 'UInt32', 'SList', 'DList', 'quicksort', 'vpm',
     '_SAVE_REGISTERS', 'FILE', 'inl', '_strtod', 'api', 'API', 'Api', '32b', '64b',
     '128', 'i386', '86', '64', 'md', 'MD', 'Md', 'ARM',
+    'kwd-lsc', 'kwd-sw', 'kwds_sw', 'globals', 'keywords', 'cmperr', 'idiom', 'ptree',
+    'ptlist', 'pnodediff', 'CharSet', 'tokens', 'errstr', 'screrror',
+    'pnodechange', 'pnodewalk', 'pnodevisit', 'jserr', 'objnames', 'kwds_sw-nocolor',
+    'rterrors_limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', 'rterrors',
 ];
 
 function toCamelCase(word) {
