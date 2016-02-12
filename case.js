@@ -65,27 +65,28 @@ var knownWords = [
     'for', 'compound', 'extended', 'statement', 'serializer', 'var', 'reader',
     'count', 'layouts', 'scope', 'release', 'aux', 'spread', 'missing', 'static',
     'version', 'argument', 'edge', 'descriptor', 'activation', 'path',
-    'unordered', 'with', 'ranges', 'crt', 'serializable', 'inl'
+    'unordered', 'with', 'ranges', 'crt', 'serializable', 'inl', 'ptrs',
+    'simd', 'cfg', 'fpu', 'id', 'api', 'tls', 'scc', 'file',
+    '16', '32', '86', '64', '128',
 ];
 
 // Known words to be in upper case
 var knownUpperCaseWords = [
-    'id', 'cfg', 'fpu', 'i', 'x', 'ir', 'scc', 'a', 'p', 'simd', 'tls', 'json',
-    'es5', 'wp', 'sse2'
+    'i', 'x', 'a', 'p', 'json','ir', 'sse2', 'wp', 'es5', 'u', 's', 'd'
 ];
 
 // Reserved words to remain unchanged
 var reservedWords = [
-    'vtinfo', 'vtregistry', 'vcxproj', 'arm', 'arm64', 'amd64',
-    'UInt16', 'UInt32', 'SList', 'DList', 'quicksort', 'vpm',
-    'FILE', 'strtod', 'api', 'API', 'Api', '32b', '64b',
-    '128', 'i386', '86', '64', 'md', 'MD', 'Md', 'ARM',
+    'vtinfo', 'vtregistry', 'vcxproj', 'arm', 'ARM', 'amd',
+    'quicksort', 'vpm', 'UInt',
+    'strtod', '32b', '64b',
+    'i386', 'md', 'MD', 'Md',
     'kwd-lsc', 'kwd', 'kwds', 'sw', 'globals', 'keywords', 'cmperr', 'idiom', 'ptree',
     'ptlist', 'pnodediff', 'CharSet', 'tokens', 'errstr', 'screrror',
     'pnodechange', 'pnodewalk', 'pnodevisit', 'jserr', 'objnames', 'kwds_sw-nocolor',
     'rterrors', 'limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', '-nocolor',
     'EHBailoutData', 'CharString', 'EhFrame', 'CodeSerializer', 'CodeSerialize',
-    'RegExp', 'RegexParser', 'RegexPattern', 'TypeId', 'PropertyId',
+    'RegExp', 'RegexParser', 'RegexPattern',
 ];
 
 function toCamelCase(word) {
@@ -125,6 +126,7 @@ reservedWords.forEach(w => {
 });
 
 
+var g_current; // current file name (bare)
 
 function transformName(name) {
     if (name.length == 0) {
@@ -132,7 +134,10 @@ function transformName(name) {
     }
 
     if (name == name.toUpperCase()) {
-        return name;
+        // special dealing with cases: arm_SAVE_REGISTERS.asm
+        if (g_current.indexOf('_') > 0) {
+            return name;
+        }
     }
 
     for (var len = name.length; len > 0; len--) {
@@ -161,6 +166,7 @@ module.exports = function(p) {
     }
 
     var bare = p.substr(0, p.length - ext.length);
+    g_current = bare;
 
     try {
         return bare.split('/').map(name =>

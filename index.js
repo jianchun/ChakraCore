@@ -1,7 +1,7 @@
 var cli = require('command-line-args')([
     {
-        name: 'test',  alias: 't',
-        description: 'test only, do not rename',
+        name: 'apply',  alias: 'a',
+        description: 'apply the renames (by default test only)',
         type: Boolean
     },
     {
@@ -80,7 +80,7 @@ process.stdin.pipe(require('split')()).on('data', line => {
             console.log(sprintf("     %-35s     %s", oldName, newName));
         }
 
-        if (!options.test) {
+        if (options.apply) {
             rename(line, result);
         }
     }
