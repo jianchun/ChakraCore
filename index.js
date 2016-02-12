@@ -43,49 +43,72 @@ function rename(oldPath, newPath) {
     fs.renameSync(oldPath, newPath);
 }
 
-var transform = require('./case.js');
-var lastDir;
+var lines = [];
 var errors = [];
+
+process.on("exit", ()=> {
+    errors.forEach((e) => console.log(e));
+});
+
 process.stdin.pipe(require('split')()).on('data', line => {
     if (line.length == 0 || !fs.lstatSync(line).isFile()) {
         return; // skip dirs
     }
+    lines.push(line);
+}).on('end', () => {
+    var transform = require('./case.js');
+    var lastDir;
 
-    var result;
-    try {
-        result = transform(line);
-    } catch(ex) {
-        if (errors.length < 20) {
-            errors.push(ex.message);
-            result = line;
-        } else {
-            process.exit(-1);
+    // I'm mostly fine with alphabetic order, but within one dir I want to group
+    // sub-dirs and files together.
+    lines.sort((a, b) => {
+        var i = 0;
+        while (i < a.length && i < b.length && a[i] == b[i]) {
+            i++;
         }
-    }
 
-    if (result != line) {
-        var oldName = path.basename(line);
-        var newName = path.basename(result);
-        if (oldName != newName) {
-            var oldDir = path.dirname(line);
-            if (oldDir != lastDir) {
-                if (lastDir) {
-                    console.log("\n");
+        var adir = a.indexOf('/', i) >= 0;
+        var bdir = b.indexOf('/', i) >= 0;
+        if (adir != bdir) {
+            return bdir ? -1 : 1;
+        }
+
+        return a.localeCompare(b);
+    });
+
+    lines.map(line => {
+        var result;
+        try {
+            result = transform(line);
+        } catch(ex) {
+            if (errors.length < 20) {
+                errors.push(ex.message);
+                result = line;
+            } else {
+                process.exit(-1);
+            }
+        }
+
+        if (result != line) {
+            var oldName = path.basename(line);
+            var newName = path.basename(result);
+            if (oldName != newName) {
+                var oldDir = path.dirname(line);
+                if (oldDir != lastDir) {
+                    if (lastDir) {
+                        console.log("\n");
+                    }
+                    console.log(sprintf("%-35s =>  %s", oldDir, path.dirname(result)));
+                    console.log();
+                    lastDir = oldDir;
                 }
-                console.log(sprintf("%-35s =>  %s", oldDir, path.dirname(result)));
-                console.log();
-                lastDir = oldDir;
+
+                console.log(sprintf("     %-35s     %s", oldName, newName));
             }
 
-            console.log(sprintf("     %-35s     %s", oldName, newName));
+            if (options.apply) {
+                rename(line, result);
+            }
         }
-
-        if (options.apply) {
-            rename(line, result);
-        }
-    }
-});
-
-process.on("exit", ()=> {
-    errors.forEach((e) => console.log(e));
+    });
 });
