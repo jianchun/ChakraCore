@@ -86,7 +86,7 @@ var reservedWords = [
     'pnodechange', 'pnodewalk', 'pnodevisit', 'jserr', 'objnames', 'kwds_sw-nocolor',
     'rterrors', 'limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', '-nocolor',
     'EHBailoutData', 'CharString', 'EhFrame', 'CodeSerializer', 'CodeSerialize',
-    'RegExp', 'RegexParser', 'RegexPattern',
+    'RegExp', 'RegexParser', 'RegexPattern', 'Backend'
 ];
 
 function toCamelCase(word) {
