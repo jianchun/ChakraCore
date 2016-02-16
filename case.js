@@ -68,6 +68,7 @@ var knownWords = [
     'unordered', 'with', 'ranges', 'crt', 'serializable', 'inl', 'ptrs',
     'simd', 'cfg', 'fpu', 'id', 'api', 'tls', 'scc', 'file',
     '16', '32', '86', '64', '128',
+    'debugger', 'properties', 'wasm', 'register', 'space'
 ];
 
 // Known words to be in upper case
@@ -81,12 +82,13 @@ var reservedWords = [
     'quicksort', 'vpm', 'UInt',
     'strtod', '32b', '64b',
     'i386', 'md', 'MD', 'Md',
-    'kwd-lsc', 'kwd', 'kwds', 'sw', 'globals', 'keywords', 'cmperr', 'idiom', 'ptree',
-    'ptlist', 'pnodediff', 'CharSet', 'tokens', 'errstr', 'screrror',
+    'kwd-lsc', 'kwd', 'kwds', 'sw', 'globals', 'keywords', 'Keywords', 'cmperr', 'idiom', 'ptree',
+    'ptlist', 'pnodediff', 'CharSet', 'tokens', 'Tokens', 'errstr', 'screrror',
     'pnodechange', 'pnodewalk', 'pnodevisit', 'jserr', 'objnames', 'kwds_sw-nocolor',
     'rterrors', 'limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', '-nocolor',
     'EHBailoutData', 'CharString', 'EhFrame', 'CodeSerializer', 'CodeSerialize',
-    'RegExp', 'RegexParser', 'RegexPattern', 'Backend'
+    'RegExp', 'RegexParser', 'RegexPattern', 'Backend',
+    'CMakeLists', 'pal', 'Pal', 'InScript', 'KeywordSwitch'
 ];
 
 function toCamelCase(word) {
