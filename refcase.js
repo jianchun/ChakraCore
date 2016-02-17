@@ -24,7 +24,7 @@ if (options.help || !options.dirs) {
 }
 
 // Ref files
-var REF_EXTS = new Set(['.h', '.inl', '.cpp', '.cc', '.ver', '.def', '.inc', '.js', '.cmd', '.vcxproj']);
+var REF_EXTS = new Set(['.h', '.inl', '.cpp', '.cc', '.asm', '.ver', '.def', '.inc', '.js', '.cmd', '.gen', '.vcxproj']);
 
 // Source files to update ref file names
 var SOURCE_FILES = [
@@ -35,7 +35,7 @@ var SOURCE_FILES = [
     },
     {
         exts: new Set(['.vcxproj', '.filters']),
-        match: /^(.*Include="$\(MSBuildThisFileDirectory\))([^"]+)(".*)$/,
+        match: /^(.*Include="\$\(MS\w+\))([^"]+)(".*)$/,
         pref: '\\'
     },
     {
