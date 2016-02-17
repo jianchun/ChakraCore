@@ -24,11 +24,26 @@ if (options.help || !options.dirs) {
 }
 
 // Ref files
-var REF_EXTS = new Set(['.h', '.inl', '.cpp', '.cc']);
+var REF_EXTS = new Set(['.h', '.inl', '.cpp', '.cc', '.ver', '.def', '.inc', '.js', '.cmd', '.vcxproj']);
 
 // Source files to update ref file names
 var SOURCE_FILES = [
-    { exts: REF_EXTS, match: /^(\s*#include\s*[<"])(.*)([>"]\s*)$/, pref: '/' }
+    {
+        exts: new Set(['.h', '.inl', '.cpp', '.cc']),
+        match: /^(\s*#include\s*[<"])(.*)([>"]\s*)$/,
+        pref: '/'
+    },
+    {
+        exts: new Set(['.vcxproj', '.filters']),
+        match: /^(.*Include="$\(MSBuildThisFileDirectory\))([^"]+)(".*)$/,
+        pref: '\\'
+    },
+    {
+        exts: new Set(['.vcxproj', '.filters']),
+        match: /^(.*Include=")([^$"]+)(".*)$/,
+        pref: '\\',
+        ignore: new Set(['i386', 'amd64', 'arm', 'arm64'])
+    },
 ];
 
 var fs = require('fs');
@@ -83,13 +98,14 @@ var unknown_refs = new Set([
     "javascripttypedobjectslotaccessorfunction.h", "directcall.h", "languagetelemetry.h",
 ]);
 var PATH_SPLIT_REGEX = /\\|\//;
-function normalize(filename, sep) {
+function normalize(filename, pref, refByFile, line, ignore) {
     var parts = filename.split(PATH_SPLIT_REGEX);
     var key = parts[parts.length - 1].toLowerCase();
     if (!refs.has(key)) {
-        if (!unknown_refs.has(key)) {
-            console.warn('Ignore', key);
-            unknown_refs.add(key);
+        if (!(ignore && ignore.has(key))
+            && !unknown_refs.has(key)) {
+                console.warn('Ignore', key, "\n\t", refByFile, "\n\t", line);
+                unknown_refs.add(key);
         }
         return filename;
     }
@@ -118,7 +134,7 @@ function normalize(filename, sep) {
     // sort, unique
     results = results.sort().filter((v, i, a) => i == 0 || a[i] != a[i - 1]);
     if (results.length == 1) {
-        return results[0];
+        return results[0].split(PATH_SPLIT_REGEX).join(pref);
     }
 
     throw new Error("Failed to match " + filename + ", candidates: " + refs.get(key));
@@ -145,7 +161,7 @@ function process_dir(dir) {
                     content.forEach((line, i) => {
                         var m = entry.match.exec(line);
                         if (m) {
-                            var n = normalize(m[2], entry.pref);
+                            var n = normalize(m[2], entry.pref, p, line, entry.ignore);
                             if (m[2] != n) {
                                 console.log(p, "\n\t", content[i]);
                                 content[i] = m[1] + n + m[3];
