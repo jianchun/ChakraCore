@@ -1,19 +1,21 @@
 var cli = require('command-line-args')([
     {
-        name: 'apply',  alias: 'a',
+        name: 'apply',  alias: 'a', type: Boolean,
         description: 'apply the renames (by default test only)',
-        type: Boolean
     },
     {
-        name: '?', alias: '?',
+        name: 'toplevel', alias: 't', type: Boolean,
+        description: 'also rename toplevel dir',
+    },
+    {
+        name: '?', alias: '?', type: Boolean,
         description: 'show usage',
-        type: Boolean
     },
 ]);
 
 var description = {
     description: 'rename dirs/files to CamelCase',
-    examples: ['find . | node [path]case/index.js' ]
+    examples: ['find bin lib | node .../case/index.js' ]
 };
 
 var options;
@@ -79,7 +81,7 @@ process.stdin.pipe(require('split')()).on('data', line => {
     lines.map(line => {
         var result;
         try {
-            result = transform(line);
+            result = transform(line, options);
         } catch(ex) {
             if (errors.length < 20) {
                 errors.push(ex.message);

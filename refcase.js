@@ -1,8 +1,12 @@
 var cli = require('command-line-args')([
     {
-        name: 'dirs', alias:'d', type: String,
+        name: 'dirs', alias: 'd', type: String,
         multiple: true, defaultOption: true,
         description: 'dirs to examine sources'
+    },
+    {
+        name: 'log', alias: 'l', type: Boolean,
+        description: 'log all replacements, even those unchanged'
     },
     {
         name: 'help', alias: '?', type: Boolean,
@@ -30,7 +34,7 @@ var REF_EXTS = new Set(['.h', '.inl', '.cpp', '.cc', '.asm', '.ver', '.def', '.i
 var SOURCE_FILES = [
     {
         exts: new Set(['.h', '.inl', '.cpp', '.cc']),
-        match: /^(\s*#include\s*[<"])(.*)([>"]\s*)$/,
+        match: /^(\s*#include\s*[<"])([^<>"]+)([>"].*)$/,
         pref: '/'
     },
     {
@@ -89,13 +93,16 @@ var unknown_refs = new Set([
     "windows.foundation.diagnostics.h", "implements.h", "windows.globalization.numberformatting.h",
     "windows.globalization.datetimeformatting.h", "shlwapi.h", "activdbg_private.h", "emmintrin.h",
     "activscp_private.h", "restrictederrorinfo.h", "activdbg100.h", "map", "atlbase.h",
-    "direct.h", "stdlib.h", "stat.h", "objbase.h", "xmllite.h",
+    "direct.h", "stdlib.h", "stat.h", "objbase.h", "xmllite.h", "tchar.h", "winbase.h", "oleauto.h",
 
     // Following not in ChakraCore, for NTBUILD
     "gctelemetry.h", "ntassert.h", "microsoft-scripting-chakraevents.h", "ieresp_mshtml.h",
     "microsoft-scripting-jscript9.internalevents.h", "microsoft-scripting-jscript9.internalcounters.h",
     "memprotectheap.h", "jitprofiling.h", "scriptcontexttelemetry.h", "telemetry.h",
     "javascripttypedobjectslotaccessorfunction.h", "directcall.h", "languagetelemetry.h",
+
+    // Cheap workaround for "Filter Include = ..." in vcxproj.filters
+    "source files", "header files", "resource files",
 ]);
 var PATH_SPLIT_REGEX = /\\|\//;
 function normalize(filename, pref, refByFile, line, ignore) {
@@ -167,6 +174,8 @@ function process_dir(dir) {
                                 content[i] = m[1] + n + m[3];
                                 console.log("\t", content[i]);
                                 modified = true;
+                            } else if (options.log) {
+                                console.log(p, ": ", content[i], "\t=>\t", n);
                             }
                         }
                     });

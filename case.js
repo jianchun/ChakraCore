@@ -68,12 +68,13 @@ var knownWords = [
     'unordered', 'with', 'ranges', 'crt', 'serializable', 'inl', 'ptrs',
     'simd', 'cfg', 'fpu', 'id', 'api', 'tls', 'scc', 'file',
     '16', '32', '86', '64', '128',
-    'debugger', 'properties', 'wasm', 'register', 'space'
+    'debugger', 'properties', 'wasm', 'register', 'space',
+    'namespace', 'text', 'externals', 'message', 'dll', 'stub', 'weighted'
 ];
 
 // Known words to be in upper case
 var knownUpperCaseWords = [
-    'i', 'x', 'a', 'p', 'json','ir', 'sse2', 'wp', 'es5', 'u', 's', 'd'
+    'i', 'x', 'a', 'p', 'json','ir', 'sse2', 'wp', 'es5', 'u', 's', 'd', 'gc'
 ];
 
 // Reserved words to remain unchanged
@@ -88,7 +89,9 @@ var reservedWords = [
     'rterrors', 'limits', 'kwd-swtch', 'perrors', 'popcode', 'rterror', '-nocolor',
     'EHBailoutData', 'CharString', 'EhFrame', 'CodeSerializer', 'CodeSerialize',
     'RegExp', 'RegexParser', 'RegexPattern', 'Backend',
-    'CMakeLists', 'pal', 'Pal', 'InScript', 'KeywordSwitch'
+    'CMakeLists', 'pal', 'Pal', 'InScript', 'KeywordSwitch',
+    'ch', 'rl', 'stdafx', 'WScript',
+    'rlfeint', 'rlmp', 'rlregr', 'rlrun', 'xmlreader',
 ];
 
 function toCamelCase(word) {
@@ -156,7 +159,7 @@ function transformName(name) {
 var path = require('path');
 var extraExtensions = [ /\.js\..*/, /\.vcxproj\..*/ ];
 
-module.exports = function(p) {
+module.exports = function(p, options) {
     var ext = path.extname(p);
     if (ext.length > 0) {
         extraExtensions.forEach(e => {
@@ -171,10 +174,17 @@ module.exports = function(p) {
     g_current = bare;
 
     try {
-        return bare.split('/').map(name =>
-            name.split('.').map(part =>
-                part.split('_').map(word => transformName(word)).join('_')
-            ).join('.')
+        var names = bare.split('/');
+        if (names.find(name => name.length > 1 && name[0] == '.')) {
+            return p; // ignore hidden items
+        }
+
+        return names.map((name, i) =>
+            (i == 0 && options && !options.toplevel) ?
+                name : // Support no-renaming top level dir
+                name.split('.').map(part =>
+                    part.split('_').map(word => transformName(word)).join('_')
+                ).join('.')
         ).join('/') + ext;
     } catch(ex) {
         throw new Error(p + ", " + ex.message);
