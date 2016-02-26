@@ -27,7 +27,8 @@ var fs = require('fs');
 var path = require('path');
 var EXTS = new Set(['.h', '.inl', '.cpp', '.cc']);
 var EXCLUDES = [
-        /CommonTypedefs\.h$/i
+        /CommonTypedefs\.h$/i,
+        /Jsrt.ChakraCommon\.h$/i,
     ];
 
 function process_dir(dir) {
@@ -54,10 +55,10 @@ function process_file(f) {
     var content = fs.readFileSync(f).toString().split('\n');
     content.forEach((line, i) => {
         var r = line.replace(/wchar_t/g, 'wchar16')
-                    .replace(/L("(\"|[^"]|\n)*")/g, 'CH_WSTR($1)')
-                    .replace(/L('(\'|[^']|\n)+')/g, 'CH_WSTR($1)')
+                    .replace(/(^|\W)L("(\\"|[^"]|\n)*")/g, '$1CH_WSTR($2)')
+                    .replace(/L('(\\'|[^']|\\n)')/g, 'CH_WSTR($1)')
                     .replace(/L##(\w+)/g, 'CH_WSTR($1)')
-                    .replace(/L#(\w+)/g, 'CH_WSTR($1)');
+                    .replace(/L(#\w+)/g, 'CH_WSTR($1)');
         if (r != line) {
             content[i] = r;
             modified = true;
