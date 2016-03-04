@@ -1,8 +1,12 @@
 var cli = require('command-line-args')([
     {
+        name: 'apply',  alias: 'a', type: Boolean,
+        description: 'apply the changes (by default test only)',
+    },
+    {
         name: 'dirs', alias: 'd', type: String,
         multiple: true, defaultOption: true,
-        description: 'dirs to perform wchar16 replacements'
+        description: 'dirs to perform char16 replacements'
     },
     {
         name: 'help', alias: '?', type: Boolean,
@@ -29,6 +33,11 @@ var EXTS = new Set(['.h', '.inl', '.cpp', '.cc']);
 var EXCLUDES = [
         /CommonTypedefs\.h$/i,
         /Jsrt.ChakraCommon\.h$/i,
+        /Jsrt.ChakraCore\.h$/i,
+        /ChakraRt\.h$/i,
+        /jsrtprivate\.h$/i,
+        /jsrt\.cpp$/i,
+        /(^|[\\\/])(external|build|ProjectionTests|jsrt)[\\\/]/i,
     ];
 
 function process_dir(dir) {
@@ -54,18 +63,22 @@ function process_file(f) {
     var modified;
     var content = fs.readFileSync(f).toString().split('\n');
     content.forEach((line, i) => {
-        var r = line.replace(/wchar_t/g, 'wchar16')
-                    .replace(/(^|\W)L("(\\"|[^"]|\n)*")/g, '$1CH_WSTR($2)')
-                    .replace(/L('(\\'|[^']|\\n)')/g, 'CH_WSTR($1)')
-                    .replace(/L##(\w+)/g, 'CH_WSTR($1)')
-                    .replace(/L(#\w+)/g, 'CH_WSTR($1)');
+        var r = line.replace(/wchar_t/g, 'char16')
+                    .replace(/(^|\W)L("(\\"|[^"]|\n)*")/g, '$1_u($2)')
+                    .replace(/L('(\\'|[^']|\\n)')/g, '_u($1)')
+                    .replace(/L##(\w+)/g, '_u($1)')
+                    .replace(/L(#\w+)/g, '_u($1)');
         if (r != line) {
             content[i] = r;
             modified = true;
         }
     });
+
     if (modified) {
+      console.log('Update', f);
+      if (options.apply) {
         fs.writeFileSync(f, content.join('\n'));
+      }
     }
 }
 
