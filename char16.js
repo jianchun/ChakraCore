@@ -65,9 +65,9 @@ function process_file(f) {
     content.forEach((line, i) => {
         var r = line.replace(/wchar_t/g, 'char16')
                     .replace(/(^|\W)L("(\\"|[^"]|\n)*")/g, '$1_u($2)')
-                    .replace(/L('(\\'|[^']|\\n)')/g, '_u($1)')
-                    .replace(/L##(\w+)/g, '_u($1)')
-                    .replace(/L(#\w+)/g, '_u($1)');
+                    .replace(/(^|\s|\(|\)|,|{)L('(\\'|[^']|\n)*')/g, '$1_u($2)')
+                    .replace(/L\s*##\s*(#?\w+)/g, '_u($1)')
+                    .replace(/L#(\s*)([a-zA-Z_]\w*)/g, '_u(#$2)');
         if (r != line) {
             content[i] = r;
             modified = true;
