@@ -7,6 +7,26 @@
 import sys
 import os
 import subprocess as SP
+import argparse, textwrap
+
+parser = argparse.ArgumentParser(
+    description = 'ChakraCore *nix Test Script',
+    formatter_class = argparse.RawDescriptionHelpFormatter,
+    epilog = textwrap.dedent('''\
+        Samples:
+
+        test all folders:
+            {0}
+
+        test only Array:
+            {0} Array
+
+        test a single file:
+            {0} Basics/hello.js
+    '''.format(sys.argv[0]))
+    )
+args = parser.parse_args()
+sys.exit(0)
 
 test_all = True
 test_root = os.path.dirname(os.path.realpath(__file__))
@@ -30,7 +50,7 @@ if len(sys.argv) > 1:
         print "Samples:"
         print "test only Array:"
         print "\t./test.py Array\n"
-        
+
         print "test a single file:"
         print "\t./test.py Basics/hello.js\n"
 
@@ -58,7 +78,7 @@ def show_failed(filename, output, exit_code, expected_output):
         ln = min(len(lst_output), len(lst_expected))
         for i in range(0, ln):
             if lst_output[i] != lst_expected[i]:
-                print "Output: (at line " + str(i) + ")" 
+                print "Output: (at line " + str(i) + ")"
                 print "----------------------------"
                 print lst_output[i]
                 print "----------------------------"
@@ -79,7 +99,7 @@ def test_path(folder, is_file):
         files = os.listdir(folder)
     else:
         files[0] = folder
-    
+
     for js_file in files:
         if is_file or os.path.splitext(js_file)[1] == '.js':
             js_file = os.path.join(folder, js_file)
@@ -110,11 +130,16 @@ def test_path(folder, is_file):
             if not is_file:
                 print "\tPassed ->", os.path.basename(js_file)
 
-is_file = len(test_dirs) == 1 and os.path.splitext(test_dirs[0])[1] == '.js'
+def Main():
+    is_file = len(test_dirs) == 1 and os.path.splitext(test_dirs[0])[1] == '.js'
 
-for folder in test_dirs:
-    full_path = os.path.join(test_root, folder)
-    if os.path.isdir(full_path) or is_file:
-        test_path(full_path, is_file)
+    for folder in test_dirs:
+        full_path = os.path.join(test_root, folder)
+        if os.path.isdir(full_path) or is_file:
+            test_path(full_path, is_file)
 
-print 'Success!'
+    print 'Success!'
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(Main())
