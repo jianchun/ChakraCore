@@ -8,11 +8,12 @@ import sys
 import os
 import subprocess as SP
 import argparse, textwrap
+import xml.etree.ElementTree as ET
 
 parser = argparse.ArgumentParser(
-    description = 'ChakraCore *nix Test Script',
-    formatter_class = argparse.RawDescriptionHelpFormatter,
-    epilog = textwrap.dedent('''\
+    description='ChakraCore *nix Test Script',
+    formatter_class=argparse.RawDescriptionHelpFormatter,
+    epilog=textwrap.dedent('''\
         Samples:
 
         test all folders:
@@ -25,10 +26,9 @@ parser = argparse.ArgumentParser(
             {0} Basics/hello.js
     '''.format(sys.argv[0]))
     )
+parser.add_argument('folders', metavar='folder', nargs='*')
 args = parser.parse_args()
-sys.exit(0)
 
-test_all = True
 test_root = os.path.dirname(os.path.realpath(__file__))
 
 # ugly trick
@@ -38,32 +38,6 @@ if not os.path.isfile(ch_path):
     print "BuildLinux/ch not found. Did you run ./build.sh already?"
     sys.exit(1)
 
-if len(sys.argv) > 1:
-    if sys.argv[1] in ['-?', '--help']:
-        print "ChakraCore *nix Test Script\n"
-
-        print "Usage:"
-        print "test.py <optional test path>\n"
-
-        print "-?, --help    : Show help\n"
-
-        print "Samples:"
-        print "test only Array:"
-        print "\t./test.py Array\n"
-
-        print "test a single file:"
-        print "\t./test.py Basics/hello.js\n"
-
-        print "test all folders:"
-        print "\t./test.py"
-        sys.exit(0)
-    test_all = None
-
-test_dirs=['']
-if test_all:
-    test_dirs = os.listdir(test_root)
-else:
-    test_dirs[0] = sys.argv[1]
 
 def show_failed(filename, output, exit_code, expected_output):
     print "\nFailed ->", filename
@@ -92,13 +66,18 @@ def show_failed(filename, output, exit_code, expected_output):
     print "\nFailed!"
     sys.exit(exit_code)
 
-def test_path(folder, is_file):
-    files=['']
-    if is_file == False:
-        print "Testing ->", os.path.basename(folder)
-        files = os.listdir(folder)
+def test_path(path):
+    if os.path.isfile(path):
+        folder, file = os.path.dirname(path), os.path.basename(path)
     else:
-        files[0] = folder
+        folder, file = path, None
+
+    tests = load_tests(folder, file)
+    if len(tests) == 0:
+        return
+
+    print "Testing ->", os.path.basename(folder)
+    return
 
     for js_file in files:
         if is_file or os.path.splitext(js_file)[1] == '.js':
@@ -130,16 +109,35 @@ def test_path(folder, is_file):
             if not is_file:
                 print "\tPassed ->", os.path.basename(js_file)
 
-def Main():
-    is_file = len(test_dirs) == 1 and os.path.splitext(test_dirs[0])[1] == '.js'
+def load_tests(folder, file):
+    try:
+        xmlpath = os.path.join(folder, 'rlexe.xml')
+        xml = ET.parse(xmlpath).getroot()
+    except IOError:
+        return []
 
-    for folder in test_dirs:
-        full_path = os.path.join(test_root, folder)
-        if os.path.isdir(full_path) or is_file:
-            test_path(full_path, is_file)
+    tests = [load_test(x) for x in xml]
+    if file != None:
+        tests = [x for x in tests if x['files'] == file]
+    return tests
+
+def load_test(test):
+    pass
+
+def is_jsfile(path):
+    return os.path.splitext(path)[1] == '.js'
+
+def main():
+    # By default run all tests
+    if len(args.folders) == 0:
+        args.folders = [os.path.join(test_root, x)
+                        for x in sorted(os.listdir(test_root))]
+
+    for folder in args.folders:
+        test_path(folder)
 
     print 'Success!'
     return 0
 
 if __name__ == '__main__':
-    sys.exit(Main())
+    sys.exit(main())
