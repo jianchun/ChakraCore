@@ -255,7 +255,7 @@ template <typename T>
 class NoWriteBarrierPtr
 {
 public:
-    NoWriteBarrierPtr() {}
+    NoWriteBarrierPtr() : ptr(nullptr) {}
     NoWriteBarrierPtr(T * value) : value(value) {}
 
     // Getters
@@ -307,7 +307,7 @@ template <typename T>
 class WriteBarrierPtr
 {
 public:
-    WriteBarrierPtr() {}
+    WriteBarrierPtr() : ptr(nullptr) {}
     WriteBarrierPtr(T * ptr)
     {
         // WriteBarrier

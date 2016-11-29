@@ -95,7 +95,7 @@ class VirtualTableInfo : public VirtualTableInfoBase
 public:
     static INT_PTR const Address;
     static INT_PTR RegisterVirtualTable(INT_PTR vtable);
-    static void SetVirtualTable(void * ptr) { new (ptr) T(VirtualTableInfoCtorValue); }
+    static void SetVirtualTable(void * ptr) { *(INT_PTR*)ptr = Address; }
     static bool HasVirtualTable(void * ptr) { return GetVirtualTable(ptr) == Address; }
 };
 
