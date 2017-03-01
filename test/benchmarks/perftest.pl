@@ -667,7 +667,7 @@ sub parse_args
             $parse_time = 0;
             $parse_scores = 1;
             $parse_latency = 1;
-            $dir = "octane";
+            $dir = "Octane";
             $basefile = "perfbase$dir.txt";
             $is_dynamicProfileRun = 0; # Currently octane dyna-pogo info is not avialable in the browser - remove this when it is.
         }
@@ -696,7 +696,7 @@ sub parse_args
              "imaging-desaturate", "imaging-gaussian-blur", "json-parse-financial", "json-stringify-tinderbox",
              "stanford-crypto-aes", "stanford-crypto-ccm", "stanford-crypto-pbkdf2", "stanford-crypto-sha256-iterative");
             $testDescription = "kraken benchmark";
-            $dir = "kraken";
+            $dir = "Kraken";
             $basefile = "perfbase$dir.txt";
             $highprecisiondate = 0;
         }
@@ -708,7 +708,7 @@ sub parse_args
             "crypto-sha1", "date-format-tofte", "date-format-xparb", "math-cordic", "math-partial-sums",
             "math-spectral-norm", "regexp-dna", "string-base64", "string-fasta", "string-tagcloud",
             "string-unpack-code", "string-validate-input");
-            $dir = "sunspider";
+            $dir = "SunSpider";
             $basefile = "perfbase$dir.txt";
             $is_dynamicProfileRun = 1;
         }
