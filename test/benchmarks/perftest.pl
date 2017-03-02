@@ -816,7 +816,7 @@ sub official_end_test
 
 sub check_switch
 {
-    system("$binary /? > _time.txt");
+    system("$binary -? > _time.txt");
     open(my $IN, '<', "_time.txt") or die;
     my $dynamicProfileSupported = 0;
     my $highprecisiondateSupported = 0;
