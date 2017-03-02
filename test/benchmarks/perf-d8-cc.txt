@@ -1,3 +1,125 @@
+d8 master Linux     vs. chakracore release/2.0 Windows
+
+PS D:\chakra\core\test\benchmarks> perl.exe .\perf.pl -binary:D:/tmp/cc_win/ch.exe
+Baseline file: perfbaseOctane.txt
+Binary: D:/tmp/cc_win/ch.exe
+Iterations: 10
+High Precision Date not used!
+Running Octane...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+box2d                    68670.6 +-0.9% 47592.2 +-1.6%  -21078.3        -30.7% <-CHECK
+code-load                20560.9 +-1.5% 20382.9 +-4.1%  -178.0   -0.9%
+crypto                   31554.0 +-1.5% 31757.3 +-1.6%   203.3    0.6%
+deltablue                63111.8 +-1.9% 25350.6 +-1.3%  -37761.2        -59.8% <-CHECK
+earley-boyer             41192.7 +-2.1% 41925.7 +-0.9%   733.0    1.8%
+gbemu                    74181.7 +-0.6% 63985.0 +-0.8%  -10196.7        -13.7% <-CHECK
+mandreel                 30546.2 +-0.9% 34359.0 +-0.5%  3812.8   12.5% <-IMPROVED
+mandreelLatency          85002.7 +-1.8% 120625.0 +-1.1% 35622.3  41.9% <-IMPROVED
+navier-stokes            31701.2 +-0.1% 37725.9 +-0.3%  6024.7   19.0% <-IMPROVED
+pdfjs                    29543.3 +-0.9% 23025.7 +-2.5%  -6517.7 -22.1% <-CHECK
+raytrace                 81333.2 +-0.6% 54473.3 +-1.2%  -26859.9        -33.0% <-CHECK
+regexp                   6624.3 +-1.1%  5211.1 +-0.8%   -1413.2 -21.3% <-CHECK
+richards                 34275.9 +-0.3% 28504.6 +-2.6%  -5771.3 -16.8% <-CHECK
+splay                    19462.7 +-0.5% 25251.3 +-1.8%  5788.7   29.7% <-IMPROVED
+splayLatency             29681.4 +-1.2% 36072.8 +-8.8%  6391.3   21.5% <-IMPROVED
+typescript               45398.2 +-0.8% 42803.6 +-0.9%  -2594.7  -5.7% <-CHECK
+zlib                     70788.1 +-1.0% 76334.6 +-0.7%  5546.4    7.8% <-IMPROVED
+---------------------------------------------------------------------------
+MEAN SCORE               37993.7 +-0.8% 35047.7 +-1.3%  -2946.0  -7.8% <-CHECK
+
+Warning: Persistent Dynamic profile is not supported!
+Baseline file: perfbaseKraken.txt
+Binary: D:/tmp/cc_win/ch.exe
+Iterations: 10
+High Precision Date not used!
+Running Kraken...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+ai-astar                  104.2 +-3.5%   272.9 +-1.1%    168.7  161.8% <-CHECK
+audio-beat-detection       52.7 +-5.8%    69.6 +-1.0%     16.9   32.1% <-CHECK
+audio-dft                  71.2 +-2.6%   134.0 +-2.4%     62.8   88.1% <-CHECK
+audio-fft                  30.2 +-1.4%    51.8 +-0.8%     21.6   71.3% <-CHECK
+audio-oscillator           48.8 +-0.9%    49.3 +-1.7%      0.6    1.1%
+imaging-darkroom          104.9 +-0.5%   126.2 +-2.6%     21.3   20.3% <-CHECK
+imaging-desaturate         49.9 +-4.7%    43.0 +-0.0%     -6.9  -13.8% <-IMPROVED
+imaging-gaussian-blur      49.2 +-0.8%   108.4 +-2.5%     59.2  120.3% <-CHECK
+json-parse-financial       36.9 +-0.9%    32.8 +-1.3%     -4.1  -11.1% <-IMPROVED
+json-stringify-tinderbox   22.4 +-2.2%    37.2 +-1.7%     14.8   65.8% <-CHECK
+stanford-crypto-aes        42.1 +-0.7%    98.4 +-3.6%     56.3  133.8% <-CHECK
+stanford-crypto-ccm        48.6 +-3.5%    79.4 +-5.4%     30.9   63.6% <-CHECK
+stanford-crypto-pbkdf2     62.3 +-1.1%   115.0 +-2.8%     52.7   84.5% <-CHECK
+stanford-crypto-sha256-i   27.1 +-2.1%    38.6 +-1.8%     11.4   42.2% <-CHECK
+---------------------------------------------------------------------------
+TOTAL TIME                750.6 +-2.2%  1256.7 +-2.1%    506.1   67.4% <-CHECK
+
+Warning: Persistent Dynamic profile is not supported!
+Baseline file: perfbaseSunSpider.txt
+Binary: D:/tmp/cc_win/ch.exe
+Iterations: 35
+High Precision Date not used!
+Running SunSpider...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+3d-cube                     8.7 +-5.4%     9.8 +-3.7%      1.2   13.4% <-CHECK
+3d-morph                    7.0 +-0.0%     3.0 +-0.0%     -4.0  -57.1% <-IMPROVED
+3d-raytrace                 9.9 +-3.4%     9.6 +-6.2%     -0.2   -2.3%
+access-binary-trees         1.9 +-17.9%    3.1 +-10.7%     1.3   67.2% <-CHECK
+access-fannkuch             5.0 +-3.5%     6.2 +-6.0%      1.1   22.4% <-CHECK
+access-nbody                2.2 +-18.8%    4.1 +-8.1%      1.9   85.5% <-CHECK
+access-nsieve               2.5 +-20.3%    4.0 +-0.0%      1.5   63.2% <-CHECK
+bitops-3bit-bits-in-byte    1.0 +-0.0%     1.1 +-23.1%     0.1    6.5%
+bitops-bits-in-byte         3.5 +-14.2%    2.5 +-19.9%    -1.0  -28.4% <-IMPROVED
+bitops-bitwise-and          2.4 +-20.3%    2.0 +-0.0%     -0.4  -15.1%
+bitops-nsieve-bits          3.1 +-10.7%    3.0 +-0.0%     -0.1   -4.1%
+controlflow-recursive       1.5 +-34.3%    6.0 +-0.0%      4.5  313.3% <-CHECK
+crypto-aes                  5.5 +-9.1%     8.0 +-0.0%      2.5   45.0% <-CHECK
+crypto-md5                  3.7 +-12.2%    5.0 +-3.5%      1.3   35.7% <-CHECK
+crypto-sha1                 4.0 +-0.0%     4.0 +-0.0%      0.0    0.0%
+date-format-tofte           9.5 +-5.3%     8.5 +-5.8%     -0.9   -9.6% <-IMPROVED
+date-format-xparb           8.5 +-5.9%    12.0 +-0.0%      3.5   42.0% <-CHECK
+math-cordic                 3.0 +-0.0%     2.0 +-8.7%     -1.0  -32.3% <-IMPROVED
+math-partial-sums           9.1 +-6.5%     6.8 +-5.4%     -2.3  -24.8% <-IMPROVED
+math-spectral-norm          2.6 +-18.6%    2.0 +-0.0%     -0.6  -23.5% <-IMPROVED
+regexp-dna                  6.0 +-0.0%     5.0 +-0.0%     -1.0  -16.7% <-IMPROVED
+string-base64               4.4 +-11.0%    5.0 +-0.0%      0.6   14.8% <-CHECK
+string-fasta               12.0 +-1.5%     7.0 +-0.0%     -5.0  -41.5% <-IMPROVED
+string-tagcloud            20.1 +-4.5%    14.2 +-2.8%     -5.9  -29.5% <-IMPROVED
+string-unpack-code         16.7 +-2.7%    17.0 +-0.0%      0.3    1.7%
+string-validate-input       6.9 +-4.3%     7.0 +-0.0%      0.1    1.4%
+---------------------------------------------------------------------------
+TOTAL TIME                160.5 +-5.8%   158.1 +-2.8%     -2.4   -1.5%
+
+Baseline file: perfbasejetstream.txt
+Binary: D:/tmp/cc_win/ch.exe
+Iterations: 5
+High Precision Date not used!
+Running jetstream...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+bigfib.cpp                504.4 +-0.1%   333.6 +-2.9%   -170.8  -33.9% <-CHECK
+container.cpp             360.0 +-1.4%   348.2 +-1.3%    -11.8   -3.3%
+dry.c                     444.8 +-0.1%   316.4 +-3.5%   -128.4  -28.9% <-CHECK
+float-mm.c                443.6 +-0.1%   375.0 +-4.3%    -68.6  -15.5% <-CHECK
+gcc-loops.cpp             663.6 +-0.6%   442.0 +-1.0%   -221.6  -33.4% <-CHECK
+hash-map                  222.2 +-1.3%   189.6 +-0.4%    -32.6  -14.7% <-CHECK
+n-body.c                  304.4 +-0.3%   314.0 +-2.3%      9.6    3.2%
+quicksort.c               337.8 +-0.1%   241.2 +-2.5%    -96.6  -28.6% <-CHECK
+towers.c                  210.8 +-0.2%   287.6 +-1.6%     76.8   36.4% <-IMPROVED
+cdjs                      161.2 +-0.5%   188.4 +-5.4%     27.2   16.9% <-IMPROVED
+---------------------------------------------------------------------------
+MEAN SCORE                336.2 +-0.3%   293.5 +-2.0%    -42.7  -12.7% <-CHECK
+
+
+
+
+
+
+
 d8 master   vs.     chakracore release/2.0
 3/1/2017
 
