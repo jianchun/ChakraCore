@@ -228,6 +228,122 @@ cdjs                      377.2 +-2.8%   178.0 +-3.4%   -199.2  -52.8% <-CHECK
 MEAN SCORE                219.0 +-0.7%   280.4 +-2.4%     61.4   28.0% <-IMPROVED
 
 
+TEST AGAIN
+chakra 2.0    LTO Linux Test  vs.   Windows SWB/nopogo Test
+
+PS D:\chakra\core\test\benchmarks> perl.exe .\perf.pl -binary:d:/chakra/core/build/vcbuild.swb/bin/x64_test/ch.exe
+Baseline file: perfbaseOctane.txt
+Binary: d:/chakra/core/build/vcbuild.swb/bin/x64_test/ch.exe
+Iterations: 10
+Running Octane...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+box2d                    42874.3 +-4.5% 43790.7 +-1.9%   916.3    2.1%
+code-load                21879.3 +-0.8% 19908.8 +-1.1%  -1970.6  -9.0% <-CHECK
+crypto                   32620.0 +-1.1% 31993.8 +-1.4%  -626.2   -1.9%
+deltablue                23098.4 +-3.4% 22804.4 +-3.9%  -294.0   -1.3%
+earley-boyer             30486.8 +-1.9% 29959.7 +-1.9%  -527.1   -1.7%
+gbemu                    66410.3 +-0.4% 60909.2 +-1.5%  -5501.1  -8.3% <-CHECK
+mandreel                 34535.1 +-0.7% 33888.7 +-1.5%  -646.4   -1.9%
+mandreelLatency          116325.7 +-5.9%        125408.3 +-2.5% 9082.7    7.8% <-IMPROVED
+navier-stokes            38491.2 +-0.1% 37774.4 +-0.2%  -716.8   -1.9%
+pdfjs                    25710.7 +-1.1% 23382.8 +-5.7%  -2327.9  -9.1% <-CHECK
+raytrace                 42430.4 +-1.7% 40780.6 +-5.7%  -1649.9  -3.9%
+regexp                   4501.0 +-4.3%  4768.3 +-1.2%    267.3    5.9% <-IMPROVED
+richards                 27242.1 +-1.1% 25630.2 +-1.2%  -1611.9  -5.9% <-CHECK
+splay                    18714.9 +-13.7%        20955.3 +-1.2%  2240.4   12.0%
+splayLatency             25976.8 +-44.6%        43559.9 +-9.7%  17583.1  67.7% <-IMPROVED
+typescript               42366.7 +-3.2% 42386.2 +-2.2%    19.6    0.0%
+zlib                     69074.1 +-1.0% 77241.9 +-0.3%  8167.8   11.8% <-IMPROVED
+---------------------------------------------------------------------------
+MEAN SCORE               32160.1 +-2.0% 32988.8 +-1.7%   828.7    2.6%
+
+Baseline file: perfbaseKraken.txt
+Binary: d:/chakra/core/build/vcbuild.swb/bin/x64_test/ch.exe
+Iterations: 10
+High Precision Date not used!
+Switches:  -dynamicProfileCache:dynamicProfileInfo.dpl
+Running Kraken...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+ai-astar                  276.4 +-1.4%   211.1 +-3.9%    -65.3  -23.6% <-IMPROVED
+audio-beat-detection       71.8 +-2.5%    62.4 +-1.9%     -9.3  -13.0% <-IMPROVED
+audio-dft                  82.6 +-3.1%   124.4 +-1.7%     41.9   50.7% <-CHECK
+audio-fft                  48.2 +-3.2%    43.2 +-3.0%     -5.0  -10.4% <-IMPROVED
+audio-oscillator           47.6 +-1.0%    48.7 +-4.5%      1.1    2.3%
+imaging-darkroom          171.4 +-0.6%   132.9 +-2.2%    -38.6  -22.5% <-IMPROVED
+imaging-desaturate         42.3 +-1.6%    42.0 +-4.3%     -0.3   -0.8%
+imaging-gaussian-blur     106.4 +-1.7%   105.8 +-1.5%     -0.7   -0.6%
+json-parse-financial       31.8 +-1.3%    37.0 +-0.0%      5.2   16.4% <-CHECK
+json-stringify-tinderbox   34.4 +-1.4%    42.0 +-5.0%      7.6   21.9% <-CHECK
+stanford-crypto-aes       103.7 +-2.2%    89.7 +-7.8%    -14.0  -13.5% <-IMPROVED
+stanford-crypto-ccm        87.7 +-7.8%    65.8 +-2.5%    -21.9  -25.0% <-IMPROVED
+stanford-crypto-pbkdf2    113.7 +-0.9%   120.2 +-1.2%      6.6    5.8% <-CHECK
+stanford-crypto-sha256-i   40.7 +-1.2%    38.3 +-1.7%     -2.3   -5.7% <-IMPROVED
+---------------------------------------------------------------------------
+TOTAL TIME               1258.7 +-2.0%  1163.6 +-2.9%    -95.1   -7.6% <-IMPROVED
+
+Baseline file: perfbaseSunSpider.txt
+Binary: d:/chakra/core/build/vcbuild.swb/bin/x64_test/ch.exe
+Iterations: 35
+Switches:  -dynamicProfileCache:dynamicProfileInfo.dpl
+Running SunSpider...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+3d-cube                    10.4 +-10.8%    3.3 +-5.2%     -7.1  -68.0% <-IMPROVED
+3d-morph                    3.0 +-6.0%     1.1 +-4.6%     -1.9  -64.6% <-IMPROVED
+3d-raytrace                10.2 +-8.0%     4.3 +-2.0%     -5.9  -57.9% <-IMPROVED
+access-binary-trees         4.3 +-14.6%    2.2 +-1.8%     -2.1  -49.1% <-IMPROVED
+access-fannkuch             7.4 +-8.8%     3.0 +-1.8%     -4.4  -59.6% <-IMPROVED
+access-nbody                4.9 +-12.0%    1.6 +-2.2%     -3.3  -66.4% <-IMPROVED
+access-nsieve               3.4 +-14.4%    1.4 +-2.8%     -2.0  -59.2% <-IMPROVED
+bitops-3bit-bits-in-byte    1.6 +-31.2%    0.4 +-2.2%     -1.2  -77.2% <-IMPROVED
+bitops-bits-in-byte         2.5 +-20.3%    1.4 +-13.1%    -1.1  -44.7% <-IMPROVED
+bitops-bitwise-and          2.0 +-8.7%     2.2 +-2.8%      0.1    6.2%
+bitops-nsieve-bits          3.0 +-0.0%     2.0 +-3.5%     -1.0  -32.2% <-IMPROVED
+controlflow-recursive       6.7 +-6.8%     1.3 +-2.7%     -5.5  -81.3% <-IMPROVED
+crypto-aes                  8.1 +-5.7%     3.1 +-3.8%     -5.0  -62.2% <-IMPROVED
+crypto-md5                  5.0 +-10.7%    1.3 +-3.6%     -3.8  -74.9% <-IMPROVED
+crypto-sha1                 4.0 +-4.5%     0.8 +-2.6%     -3.1  -79.2% <-IMPROVED
+date-format-tofte          11.4 +-4.2%     7.1 +-1.0%     -4.3  -37.8% <-IMPROVED
+date-format-xparb          17.6 +-2.8%    12.4 +-1.3%     -5.2  -29.4% <-IMPROVED
+math-cordic                 2.6 +-18.6%    1.5 +-3.2%     -1.1  -43.2% <-IMPROVED
+math-partial-sums           8.5 +-5.9%     4.3 +-2.2%     -4.2  -49.6% <-IMPROVED
+math-spectral-norm          1.9 +-15.5%    0.5 +-2.8%     -1.4  -72.4% <-IMPROVED
+regexp-dna                  4.8 +-8.2%     5.4 +-3.7%      0.6   12.5% <-CHECK
+string-base64               4.9 +-6.9%     1.7 +-2.5%     -3.1  -64.4% <-IMPROVED
+string-fasta                7.0 +-2.5%     5.6 +-1.7%     -1.4  -19.5% <-IMPROVED
+string-tagcloud            13.4 +-3.6%    12.5 +-1.8%     -0.8   -6.2% <-IMPROVED
+string-unpack-code         18.3 +-3.1%    15.0 +-1.2%     -3.3  -17.9% <-IMPROVED
+string-validate-input       7.0 +-2.5%     5.3 +-2.5%     -1.6  -23.2% <-IMPROVED
+---------------------------------------------------------------------------
+TOTAL TIME                173.5 +-6.7%   100.5 +-2.3%    -73.0  -42.1% <-IMPROVED
+
+Baseline file: perfbasejetstream.txt
+Binary: d:/chakra/core/build/vcbuild.swb/bin/x64_test/ch.exe
+Iterations: 5
+Running jetstream...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+bigfib.cpp                341.4 +-0.5%   336.4 +-1.2%     -5.0   -1.5%
+container.cpp             356.4 +-2.1%   346.4 +-0.9%    -10.0   -2.8%
+dry.c                     311.8 +-8.3%   319.4 +-1.8%      7.6    2.4%
+float-mm.c                340.4 +-3.5%   387.4 +-4.2%     47.0   13.8% <-IMPROVED
+gcc-loops.cpp             383.2 +-1.5%   431.2 +-1.2%     48.0   12.5% <-IMPROVED
+hash-map                  192.8 +-0.4%   182.6 +-0.8%    -10.2   -5.3% <-CHECK
+n-body.c                   11.0 +-0.0%   313.2 +-2.1%    302.2  2747.3% <-IMPROVED
+quicksort.c               240.2 +-3.0%   243.8 +-2.5%      3.6    1.5%
+towers.c                  267.0 +-1.8%   284.2 +-1.3%     17.2    6.4% <-IMPROVED
+cdjs                      377.2 +-2.8%   193.0 +-1.6%   -184.2  -48.8% <-CHECK
+---------------------------------------------------------------------------
+MEAN SCORE                219.0 +-0.7%   293.6 +-1.6%     74.6   34.0% <-IMPROVED
+
+
+
 
 chakra 2.0    LTO Linux Test  vs.   Windows SWB/nopogo Test
 
