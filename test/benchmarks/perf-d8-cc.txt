@@ -1,3 +1,121 @@
+v8 Linux vs. v8 Windows
+
+PS D:\chakra\core\test\benchmarks> perl .\perf.pl -binary:d:/tmp/lei/v8_out/default/d8.exe
+Baseline file: perfbaseOctane.txt
+Binary: d:/tmp/lei/v8_out/default/d8.exe
+Iterations: 10
+High Precision Date not used!
+Running Octane...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+box2d                    68670.6 +-0.9% 62231.4 +-0.6%  -6439.1  -9.4% <-CHECK
+code-load                20560.9 +-1.5% 14959.9 +-0.3%  -5601.0 -27.2% <-CHECK
+crypto                   31554.0 +-1.5% 31057.2 +-1.4%  -496.8   -1.6%
+deltablue                63111.8 +-1.9% 62662.2 +-0.8%  -449.6   -0.7%
+earley-boyer             41192.7 +-2.1% 38269.6 +-0.3%  -2923.1  -7.1% <-CHECK
+gbemu                    74181.7 +-0.6% 62420.7 +-0.5%  -11761.0        -15.9% <-CHECK
+mandreel                 30546.2 +-0.9% 27193.1 +-1.1%  -3353.1 -11.0% <-CHECK
+mandreelLatency          85002.7 +-1.8% 59053.9 +-1.8%  -25948.8        -30.5% <-CHECK
+navier-stokes            31701.2 +-0.1% 31167.8 +-0.1%  -533.4   -1.7%
+pdfjs                    29543.3 +-0.9% 24341.9 +-1.0%  -5201.4 -17.6% <-CHECK
+raytrace                 81333.2 +-0.6% 76769.9 +-0.8%  -4563.3  -5.6% <-CHECK
+regexp                   6624.3 +-1.1%  5321.6 +-0.7%   -1302.8 -19.7% <-CHECK
+richards                 34275.9 +-0.3% 33024.7 +-3.3%  -1251.2  -3.7%
+splay                    19462.7 +-0.5% 18075.1 +-1.0%  -1387.6  -7.1% <-CHECK
+splayLatency             29681.4 +-1.2% 25567.8 +-0.8%  -4113.7 -13.9% <-CHECK
+typescript               45398.2 +-0.8% 38154.0 +-0.6%  -7244.2 -16.0% <-CHECK
+zlib                     70788.1 +-1.0% 68757.3 +-0.3%  -2030.8  -2.9%
+---------------------------------------------------------------------------
+MEAN SCORE               37993.7 +-0.8% 33545.4 +-0.7%  -4448.4 -11.7% <-CHECK
+
+Warning: Persistent Dynamic profile is not supported!
+Baseline file: perfbaseKraken.txt
+Binary: d:/tmp/lei/v8_out/default/d8.exe
+Iterations: 10
+High Precision Date not used!
+Running Kraken...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+ai-astar                  104.2 +-3.5%   106.7 +-7.0%      2.4    2.3%
+audio-beat-detection       52.7 +-5.8%    61.1 +-13.2%     8.4   16.0% <-CHECK
+audio-dft                  71.2 +-2.6%   141.7 +-4.9%     70.4   98.9% <-CHECK
+audio-fft                  30.2 +-1.4%    33.0 +-18.7%     2.8    9.2%
+audio-oscillator           48.8 +-0.9%    51.2 +-9.6%      2.4    5.0%
+imaging-darkroom          104.9 +-0.5%   115.8 +-3.6%     10.9   10.4% <-CHECK
+imaging-desaturate         49.9 +-4.7%    48.1 +-13.9%    -1.8   -3.6%
+imaging-gaussian-blur      49.2 +-0.8%    51.4 +-12.2%     2.2    4.5%
+json-parse-financial       36.9 +-0.9%    49.1 +-13.5%    12.2   33.1% <-CHECK
+json-stringify-tinderbox   22.4 +-2.2%    31.0 +-0.0%      8.6   38.1% <-CHECK
+stanford-crypto-aes        42.1 +-0.7%    42.0 +-14.7%    -0.1   -0.3%
+stanford-crypto-ccm        48.6 +-3.5%    63.1 +-9.8%     14.6   30.0% <-CHECK
+stanford-crypto-pbkdf2     62.3 +-1.1%    83.4 +-2.3%     21.1   33.9% <-CHECK
+stanford-crypto-sha256-i   27.1 +-2.1%    30.8 +-11.7%     3.7   13.5% <-CHECK
+---------------------------------------------------------------------------
+TOTAL TIME                750.6 +-2.2%   908.4 +-8.3%    157.9   21.0% <-CHECK
+
+Warning: Persistent Dynamic profile is not supported!
+Baseline file: perfbaseSunSpider.txt
+Binary: d:/tmp/lei/v8_out/default/d8.exe
+Iterations: 35
+High Precision Date not used!
+Running SunSpider...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+3d-cube                     8.7 +-5.4%    10.3 +-67.2%     1.6   18.2%
+3d-morph                    7.0 +-0.0%     8.2 +-90.7%     1.2   17.5%
+3d-raytrace                 9.9 +-3.4%    10.9 +-59.9%     1.0   10.1%
+access-binary-trees         1.9 +-17.9%    1.5 +-285.5%   -0.3  -17.2%
+access-fannkuch             5.0 +-3.5%     3.8 +-164.1%   -1.3  -25.0%
+access-nbody                2.2 +-18.8%    2.0 +-246.3%   -0.2   -8.7%
+access-nsieve               2.5 +-20.3%    1.5 +-286.4%   -0.9  -36.8%
+bitops-3bit-bits-in-byte    1.0 +-0.0%     0.0 +-0.0%     -1.0  -100.0% <-IMPROVED
+bitops-bits-in-byte         3.5 +-14.2%    1.5 +-286.4%   -2.0  -56.0%
+bitops-bitwise-and          2.4 +-20.3%    0.6 +-458.3%   -1.8  -75.3%
+bitops-nsieve-bits          3.1 +-10.7%    3.6 +-171.9%    0.5   15.5%
+controlflow-recursive       1.5 +-34.3%    1.1 +-345.7%   -0.4  -26.7%
+crypto-aes                  5.5 +-9.1%     5.6 +-125.5%    0.1    1.8%
+crypto-md5                  3.7 +-12.2%    5.1 +-135.3%    1.4   37.4%
+crypto-sha1                 4.0 +-0.0%     2.7 +-186.6%   -1.3  -32.3%
+date-format-tofte           9.5 +-5.3%    12.9 +-43.4%     3.5   36.5%
+date-format-xparb           8.5 +-5.9%    10.5 +-63.7%     2.0   23.7%
+math-cordic                 3.0 +-0.0%     4.1 +-157.0%    1.1   37.6%
+math-partial-sums           9.1 +-6.5%     9.5 +-74.6%     0.4    3.9%
+math-spectral-norm          2.6 +-18.6%    1.7 +-263.7%   -0.9  -35.8%
+regexp-dna                  6.0 +-0.0%     6.5 +-112.4%    0.5    8.1%
+string-base64               4.4 +-11.0%    4.1 +-157.0%   -0.2   -5.2%
+string-fasta               12.0 +-1.5%    14.3 +-20.0%     2.3   19.4%
+string-tagcloud            20.1 +-4.5%    26.0 +-26.9%     5.9   29.3% <-CHECK
+string-unpack-code         16.7 +-2.7%    22.0 +-32.4%     5.3   31.5%
+string-validate-input       6.9 +-4.3%     8.3 +-86.3%     1.4   19.6%
+---------------------------------------------------------------------------
+TOTAL TIME                160.5 +-5.8%   178.3 +-81.4%    17.8   11.1%
+
+Baseline file: perfbasejetstream.txt
+Binary: d:/tmp/lei/v8_out/default/d8.exe
+Iterations: 5
+High Precision Date not used!
+Running jetstream...
+
+TEST - NATIVE                BASE            TEST         DIFF   RATIO(%)
+---------------------------------------------------------------------------
+bigfib.cpp                504.4 +-0.1%   416.4 +-1.4%    -88.0  -17.4% <-CHECK
+container.cpp             360.0 +-1.4%   323.4 +-0.8%    -36.6  -10.2% <-CHECK
+dry.c                     444.8 +-0.1%   417.8 +-3.6%    -27.0   -6.1% <-CHECK
+float-mm.c                443.6 +-0.1%   430.4 +-0.2%    -13.2   -3.0%
+gcc-loops.cpp             663.6 +-0.6%   639.6 +-0.4%    -24.0   -3.6%
+hash-map                  222.2 +-1.3%   203.4 +-1.6%    -18.8   -8.5% <-CHECK
+n-body.c                  304.4 +-0.3%   290.4 +-3.2%    -14.0   -4.6% <-CHECK
+quicksort.c               337.8 +-0.1%   306.0 +-1.8%    -31.8   -9.4% <-CHECK
+towers.c                  210.8 +-0.2%   216.4 +-0.2%      5.6    2.7%
+cdjs                      161.2 +-0.5%    74.8 +-3.4%    -86.4  -53.6% <-CHECK
+---------------------------------------------------------------------------
+MEAN SCORE                336.2 +-0.3%   292.2 +-1.1%    -44.1  -13.1% <-CHECK
+
+
+
 Windows chakracore SWB/nopogo vs. v8
 
 PS D:\chakra\core\test\benchmarks> perl .\perf.pl -binary:d:/tmp/lei/v8_out/default/d8.exe
