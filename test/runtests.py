@@ -128,7 +128,7 @@ if sys.platform != 'win32':
 
 if sys.platform == 'darwin':
     not_tags.add('exclude_mac')
-not_compile_flags = set(['-simdjs']) \
+not_compile_flags = set([]) \
     if sys.platform != 'win32' else None
 
 # use tags/not_tags/not_compile_flags as case-insensitive

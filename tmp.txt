@@ -1,0 +1,665 @@
+xjc@ubun:~/core$ out/Debug/ch -bgjit- -testtrace:asmjs test/AsmJs/LoopBodyToJit.js -forcenative -off:simplejit -dump:encoder
+Successfully compiled asm.js code
+-----------------------------------------------------------------------------
+Function Global code ( (#1.0), #1)                Instr Count:377		Size:1539
+
+7FDF8F025000           FunctionEntry
+7FDF8F025000   (rax).i64 = MOV        0x5625164A9360 (&StackLimit).u64
+7FDF8F02500A   (rax).i64 = MOV        [(rax).i64].i64
+7FDF8F02500D   (rax).i64 = ADD        (rax).i64, 7184 (0x1C10).i64
+7FDF8F025014           JO             $L43
+7FDF8F02501A           CMP            (rsp).i64, (rax).i64
+7FDF8F02501D           JLE            $L43
+7FDF8F025023           NOP            3 (0x3).i8
+7FDF8F025026           NOP            2 (0x2).i8
+7FDF8F025028           PrologStart
+7FDF8F025028           PUSH           (rbp).i64
+7FDF8F02502A   (rbp).i64 = MOV        (rsp).i64
+7FDF8F02502D   (rsp).i64 = SUB        (rsp).i64, 16 (0x10).i64
+7FDF8F025031           PUSH           (r15).i64
+7FDF8F025033           PUSH           (r14).i64
+7FDF8F025035           PUSH           (r13).i64
+7FDF8F025037           PUSH           (r12).i64
+7FDF8F025039           PUSH           (rbx).i64
+7FDF8F02503B   (rsp).i64 = SUB        (rsp).i64, 72 (0x48).i64
+7FDF8F02503F           PrologEnd
+
+
+ GLOBOPT INSTR:     s1[Object].var  =  Ld_A           0xXXXXXXXX (GlobalObject)[Object].var   #
+
+
+7FDF8F02503F   s51(rbx).u64 = MOV     0x1000000000001.var
+7FDF8F025049   s195(rax).u64 = MOV    0x7FDF8F090154 (&CallCount).u64
+7FDF8F025053   [s195(rax).u64].u32 = INC  [s195(rax).u64].u32
+7FDF8F025055   s1(r12)[Object].var = MOV  0x7FDF8F150000 (GlobalObject)[Object].var
+
+
+ GLOBOPT INSTR:     s2[Undefined].var = Ld_A          0xXXXXXXXX (undefined)[Undefined].var   #
+
+
+7FDF8F02505F   s2(r13)[Undefined].var = MOV  0x7FDF8F154030 (undefined)[Undefined].var
+7FDF8F025069   s196(rax).i64 = MOV     [encoded: 0x5BD481C2.var
+7FDF8F025073   s197(rcx).i64 = MOV    1540653506 (0x5BD481C2).i64
+7FDF8F02507D   s196(rax).i64 = XOR    s196(rax).i64, s197(rcx).i64
+
+
+ GLOBOPT INSTR:     s4[CanBeTaggedValue_Float].var = LdC_A_R8  1.5.f64                        #
+
+
+7FDF8F025080   s4(r14)[CanBeTaggedValue_Float].var = MOV  s196(rax).var
+
+
+ GLOBOPT INSTR:     s5.var          =  Ld_A           0xXXXXXXXX (NullFrameDisplay).u64       #
+
+
+7FDF8F025083   s5(r15).var = MOV      0x7FDF948ED1A8 (NullFrameDisplay).u64
+
+
+ GLOBOPT INSTR:     s10(s1[Object]->obj).var! = EnsureNoRootRedeclFld                         #0000
+
+
+7FDF8F02508D   s191(rdi).var = MOV    s1(r12)[Object].var
+7FDF8F025090   arg2(s192)(rsi).u32 = MOV  717 (0x2CD).u32
+7FDF8F025095   s194(rax).u64 = MOV    Op_EnsureNoRootRedeclProperty.u64
+7FDF8F02509F           CALL           s194(rax).u64
+
+
+ GLOBOPT INSTR:     s6.var          =  NewScFunc      func:AsmModule(), env:s5                #0003
+
+
+7FDF8F0250A2   s186(rdi).var = MOV    s5(r15).var!
+7FDF8F0250A5   arg2(s188)(rsi).u64 = MOV  0x7FDF8F154078 (Unknown).u64
+7FDF8F0250AF   s190(rax).u64 = MOV    ScrFunc_OP_NewScFunc.u64
+7FDF8F0250B9   s187(rax).var = CALL   s190(rax).u64
+
+
+ GLOBOPT INSTR:     s11(s1[Object]->AsmModule)<?,,--,s?,s?>.var! = InitRootFld  s6.var!       #0009
+
+
+7FDF8F0250BC   s165(rcx).u64 = MOV    0x7FDF961FF110 (InlineCache).u64
+7FDF8F0250C6   s166(rdx).u64 = MOV    [s1(r12)[Object].var+8].i64
+7FDF8F0250CB           CMP            s166(rdx).u64, [s165(rcx).u64].i64
+7FDF8F0250CE           JNE            $L41
+7FDF8F0250D0   s167(rsi).i64 = MOVZXW  [s165(rcx).u64+18].u16
+7FDF8F0250D5   s168(rsi).u64 = LEA    [s1(r12)[Object].var+s167(rsi).i64*8].i64
+7FDF8F0250D9   s169(rdi).u64 = LEA    [s168(rsi).u64].i64
+7FDF8F0250DC   [s168(rsi).u64].i64 = MOV  s6(rax).var
+7FDF8F0250DF   s169(rdi).u64 = SHR    s169(rdi).u64, 12 (0xC).i8
+7FDF8F0250E3   s170(rsi).i64 = MOV    0x7FD718E96000 (Unknown).u64
+7FDF8F0250ED   [s170(rsi).i64+s169(rdi).u64].i8 = MOV  1 (0x1).i8
+7FDF8F0250F1           JMP            $L40
+7FDF8F0250F3  $L41:
+7FDF8F0250F3   s171(rdx).u64 = OR     s171(rdx).u64, 4 (0x4).u64
+7FDF8F0250F7           CMP            s171(rdx).u64, [s165(rcx).u64].i64
+7FDF8F0250FA           JNE            $L39
+7FDF8F025100   s172(rdx).i64 = MOV    [s1(r12)[Object].var+16].i64
+7FDF8F025105   s173(rcx).i64 = MOVZXW  [s165(rcx).u64+18].u16
+7FDF8F02510A   s174(rcx).u64 = LEA    [s172(rdx).i64+s173(rcx).i64*8].i64
+7FDF8F02510E   s175(rdx).u64 = LEA    [s174(rcx).u64].i64
+7FDF8F025111   [s174(rcx).u64].i64 = MOV  s6(rax).var
+7FDF8F025114   s175(rdx).u64 = SHR    s175(rdx).u64, 12 (0xC).i8
+7FDF8F025118   s176(rcx).i64 = MOV    0x7FD718E96000 (Unknown).u64
+7FDF8F025122   [s176(rcx).i64+s175(rdx).u64].i8 = MOV  1 (0x1).i8
+7FDF8F025126  $L40:
+
+
+ GLOBOPT INSTR:     s10(s1[Object]->obj).var! = LdElemUndef                                   #000f
+
+
+7FDF8F025126   s161(rdi).var = MOV    s1(r12)[Object].var
+7FDF8F025129   arg2(s162)(rsi).u32 = MOV  717 (0x2CD).u32
+7FDF8F02512E   s164(rax).u64 = MOV    Op_LdElemUndef.u64
+7FDF8F025138           CALL           s164(rax).u64
+7FDF8F02513B
+
+  Line  27: var obj = AsmModule();
+  Col    1: ^
+                       StatementBoundary  #0
+
+
+ GLOBOPT INSTR:     s12.var         =  LdRootMethodFld  s11(s1[Object]->AsmModule)<?,,--,s?,s?>.var! #0015
+
+
+7FDF8F02513B   s142(rax).u64 = MOV    0x7FDF961FF0D0 (InlineCache).u64
+7FDF8F025145   s143(rcx).u64 = MOV    [s1(r12)[Object].var+8].i64
+7FDF8F02514A           CMP            s143(rcx).u64, [s142(rax).u64+8].i64
+7FDF8F02514E           JNE            $L35
+7FDF8F025150   s144(rdx).i64 = MOV    [s142(rax).u64+16].i64
+7FDF8F025154   s145(rsi).i64 = MOVZXW  [s142(rax).u64+2].u16
+7FDF8F025159   s12(r15).var = MOV     [s144(rdx).i64+s145(rsi).i64*8].i64
+7FDF8F02515D           JMP            $L33
+7FDF8F02515F  $L35:
+7FDF8F02515F   s146(rdx).u64 = MOV    s143(rcx).u64
+7FDF8F025162   s146(rdx).u64 = OR     s146(rdx).u64, 4 (0x4).u64
+7FDF8F025166           CMP            s146(rdx).u64, [s142(rax).u64+8].i64
+7FDF8F02516A           JNE            $L36
+7FDF8F02516C   s147(rsi).i64 = MOV    [s142(rax).u64+16].i64
+7FDF8F025170   s148(rsi).i64 = MOV    [s147(rsi).i64+16].i64
+7FDF8F025174   s149(rdi).i64 = MOVZXW  [s142(rax).u64+2].u16
+7FDF8F025179   s12(r15).var = MOV     [s148(rsi).i64+s149(rdi).i64*8].i64
+7FDF8F02517D           JMP            $L33
+7FDF8F02517F  $L36:
+7FDF8F02517F           CMP            s143(rcx).u64, [s142(rax).u64].i64
+7FDF8F025182           JNE            $L37
+7FDF8F025184   s150(rcx).i64 = MOVZXW  [s142(rax).u64+18].u16
+7FDF8F025189   s12(r15).var = MOV     [s1(r12)[Object].var+s150(rcx).i64*8].i64
+7FDF8F02518D           JMP            $L33
+7FDF8F02518F  $L37:
+7FDF8F02518F           CMP            s146(rdx).u64, [s142(rax).u64].i64
+7FDF8F025192           JNE            $L34
+7FDF8F025198   s151(rcx).i64 = MOV    [s1(r12)[Object].var+16].i64
+7FDF8F02519D   s152(rax).i64 = MOVZXW  [s142(rax).u64+18].u16
+7FDF8F0251A2   s12(r15).var = MOV     [s151(rcx).i64+s152(rax).i64*8].i64
+7FDF8F0251A6  $L33:
+
+
+ GLOBOPT INSTR:     s15.var         =  CallI          s12.var!, arg1(s14)<0>.var!             #0021
+
+
+7FDF8F0251A6   s133(rax).i64 = MOV    s12(r15).var!
+7FDF8F0251A9   s133(rax).i64 = SHR    s133(rax).i64, 48 (0x30).i8
+7FDF8F0251AD           JNE            $L31
+7FDF8F0251B3  $L32:
+7FDF8F0251B3   s137(rax).i64 = MOV    [s12(r15).var+8].i64
+7FDF8F0251B7   s137(rax).i64 = MOV    [s137(rax).i64+24].u64
+7FDF8F0251BB   (rdi).i64 = MOV        s12(r15).var
+7FDF8F0251BE   arg1(s14)(rdx).var = MOV  s2(r13)[Undefined].var
+7FDF8F0251C1   (rsi).i64 = MOV        33554433 (0x2000001).i64
+7FDF8F0251C8   arg3(s139)<16>.i64 = MOV  (rdx).i64
+7FDF8F0251CD   arg2(s140)<8>.i64 = MOV  (rsi).i64
+7FDF8F0251D2   arg1(s141)<0>.i64 = MOV  (rdi).i64
+7FDF8F0251D6   s138(rax).var = CALL   s137(rax).i64
+
+
+ GLOBOPT INSTR:     s10(s1[Object]->obj)<?,,--,s?,s?>.var! = StRootFld  s15.var!              #002b
+
+
+7FDF8F0251D9   s111(rcx).u64 = MOV    0x7FDF961FF130 (InlineCache).u64
+7FDF8F0251E3   s112(rdx).u64 = MOV    [s1(r12)[Object].var+8].i64
+7FDF8F0251E8           CMP            s112(rdx).u64, [s111(rcx).u64].i64
+7FDF8F0251EB           JNE            $L29
+7FDF8F0251ED   s113(rsi).i64 = MOVZXW  [s111(rcx).u64+18].u16
+7FDF8F0251F2   s114(rsi).u64 = LEA    [s1(r12)[Object].var+s113(rsi).i64*8].i64
+7FDF8F0251F6   s115(rdi).u64 = LEA    [s114(rsi).u64].i64
+7FDF8F0251F9   [s114(rsi).u64].i64 = MOV  s15(rax).var
+7FDF8F0251FC   s115(rdi).u64 = SHR    s115(rdi).u64, 12 (0xC).i8
+7FDF8F025200   s116(rsi).i64 = MOV    0x7FD718E96000 (Unknown).u64
+7FDF8F02520A   [s116(rsi).i64+s115(rdi).u64].i8 = MOV  1 (0x1).i8
+7FDF8F02520E           JMP            $L28
+7FDF8F025210  $L29:
+7FDF8F025210   s117(rdx).u64 = OR     s117(rdx).u64, 4 (0x4).u64
+7FDF8F025214           CMP            s117(rdx).u64, [s111(rcx).u64].i64
+7FDF8F025217           JNE            $L27
+7FDF8F02521D   s118(rdx).i64 = MOV    [s1(r12)[Object].var+16].i64
+7FDF8F025222   s119(rcx).i64 = MOVZXW  [s111(rcx).u64+18].u16
+7FDF8F025227   s120(rcx).u64 = LEA    [s118(rdx).i64+s119(rcx).i64*8].i64
+7FDF8F02522B   s121(rdx).u64 = LEA    [s120(rcx).u64].i64
+7FDF8F02522E   [s120(rcx).u64].i64 = MOV  s15(rax).var
+7FDF8F025231   s121(rdx).u64 = SHR    s121(rdx).u64, 12 (0xC).i8
+7FDF8F025235   s122(rcx).i64 = MOV    0x7FD718E96000 (Unknown).u64
+7FDF8F02523F   [s122(rcx).i64+s121(rdx).u64].i8 = MOV  1 (0x1).i8
+7FDF8F025243  $L28:
+7FDF8F025243
+
+  Line  28: print(obj.f3(1,1.5));
+  Col    1: ^
+                       StatementBoundary  #1
+
+
+ GLOBOPT INSTR:     s17.var         =  LdRootMethodFld  s16(s1[Object]->print)<?,,--,s?,s?>.var! #0031
+
+
+7FDF8F025243   s92(rax).u64 = MOV     0x7FDF961FF0F0 (InlineCache).u64
+7FDF8F02524D   s93(rcx).u64 = MOV     [s1(r12)[Object].var+8].i64
+7FDF8F025252           CMP            s93(rcx).u64, [s92(rax).u64+8].i64
+7FDF8F025256           JNE            $L23
+7FDF8F025258   s94(rdx).i64 = MOV     [s92(rax).u64+16].i64
+7FDF8F02525C   s95(rsi).i64 = MOVZXW  [s92(rax).u64+2].u16
+7FDF8F025261   s17(r15).var = MOV     [s94(rdx).i64+s95(rsi).i64*8].i64
+7FDF8F025265           JMP            $L21
+7FDF8F025267  $L23:
+7FDF8F025267   s96(rdx).u64 = MOV     s93(rcx).u64
+7FDF8F02526A   s96(rdx).u64 = OR      s96(rdx).u64, 4 (0x4).u64
+7FDF8F02526E           CMP            s96(rdx).u64, [s92(rax).u64+8].i64
+7FDF8F025272           JNE            $L24
+7FDF8F025274   s97(rsi).i64 = MOV     [s92(rax).u64+16].i64
+7FDF8F025278   s98(rsi).i64 = MOV     [s97(rsi).i64+16].i64
+7FDF8F02527C   s99(rdi).i64 = MOVZXW  [s92(rax).u64+2].u16
+7FDF8F025281   s17(r15).var = MOV     [s98(rsi).i64+s99(rdi).i64*8].i64
+7FDF8F025285           JMP            $L21
+7FDF8F025287  $L24:
+7FDF8F025287           CMP            s93(rcx).u64, [s92(rax).u64].i64
+7FDF8F02528A           JNE            $L25
+7FDF8F02528C   s100(rcx).i64 = MOVZXW  [s92(rax).u64+18].u16
+7FDF8F025291   s17(r15).var = MOV     [s1(r12)[Object].var+s100(rcx).i64*8].i64
+7FDF8F025295           JMP            $L21
+7FDF8F025297  $L25:
+7FDF8F025297           CMP            s96(rdx).u64, [s92(rax).u64].i64
+7FDF8F02529A           JNE            $L22
+7FDF8F0252A0   s101(rcx).i64 = MOV    [s1(r12)[Object].var+16].i64
+7FDF8F0252A5   s102(rax).i64 = MOVZXW  [s92(rax).u64+18].u16
+7FDF8F0252AA   s17(r15).var = MOV     [s101(rcx).i64+s102(rax).i64*8].i64
+7FDF8F0252AE  $L21:
+
+
+ GLOBOPT INSTR:     s28[Undefined].var = BytecodeArgOutCapture  s2[Undefined].var             #003a
+
+
+7FDF8F0252AE   s28(rax)[Undefined].var = MOV  s2(r13)[Undefined].var
+
+
+ GLOBOPT INSTR:     s8.var          =  LdRootFld      s10(s1[Object]->obj)<?,,--,s?,s?>.var!  #003d
+
+
+7FDF8F0252B1   s78(rcx).u64 = MOV     0x7FDF961FF0B0 (InlineCache).u64
+7FDF8F0252BB   s79(rdx).u64 = MOV     [s1(r12)[Object].var+8].i64
+7FDF8F0252C0           CMP            s79(rdx).u64, [s78(rcx).u64].i64
+7FDF8F0252C3           JNE            $L19
+7FDF8F0252C5   s80(rsi).i64 = MOVZXW  [s78(rcx).u64+18].u16
+7FDF8F0252CA   s8(rsi).var = MOV      [s1(r12)[Object].var+s80(rsi).i64*8].i64
+7FDF8F0252CE           JMP            $L17
+7FDF8F0252D0  $L19:
+7FDF8F0252D0   s81(rdx).u64 = OR      s81(rdx).u64, 4 (0x4).u64
+7FDF8F0252D4           CMP            s81(rdx).u64, [s78(rcx).u64].i64
+7FDF8F0252D7           JNE            $L18
+7FDF8F0252DD   s82(rdx).i64 = MOV     [s1(r12)[Object].var+16].i64
+7FDF8F0252E2   s83(rcx).i64 = MOVZXW  [s78(rcx).u64+18].u16
+7FDF8F0252E7   s8(rsi).var = MOV      [s82(rdx).i64+s83(rcx).i64*8].i64
+7FDF8F0252EB  $L17:
+
+
+ GLOBOPT INSTR:                        BailOnNotObject  s8.var                                #      Bailout: #0043 (BailOutOnTaggedValue)
+
+
+7FDF8F0252EB   s77(rcx).i64 = MOV     s8(rsi).var
+7FDF8F0252EE   s77(rcx).i64 = SHR     s77(rcx).i64, 48 (0x30).i8
+7FDF8F0252F2           JNE            $L14
+7FDF8F0252F8  $L13:
+
+
+ GLOBOPT INSTR:     s7.var          =  LdMethodFld    s20(s8->f3)<?,,--,s?,s?>.var!           #0043
+
+
+7FDF8F0252F8   s58(rax).u64 = MOV     0x7FDF961FF090 (InlineCache).u64
+7FDF8F025302   s59(rcx).u64 = MOV     [s8(rsi).var+8].i64
+7FDF8F025306           CMP            s59(rcx).u64, [s58(rax).u64+8].i64
+7FDF8F02530A           JNE            $L9
+7FDF8F02530C   s60(rdx).i64 = MOV     [s58(rax).u64+16].i64
+7FDF8F025310   s61(rdi).i64 = MOVZXW  [s58(rax).u64+2].u16
+7FDF8F025315   s7(r12).var = MOV      [s60(rdx).i64+s61(rdi).i64*8].i64
+7FDF8F025319           JMP            $L7
+7FDF8F02531B  $L9:
+7FDF8F02531B   s62(rdx).u64 = MOV     s59(rcx).u64
+7FDF8F02531E   s62(rdx).u64 = OR      s62(rdx).u64, 4 (0x4).u64
+7FDF8F025322           CMP            s62(rdx).u64, [s58(rax).u64+8].i64
+7FDF8F025326           JNE            $L10
+7FDF8F025328   s63(rdi).i64 = MOV     [s58(rax).u64+16].i64
+7FDF8F02532C   s64(rdi).i64 = MOV     [s63(rdi).i64+16].i64
+7FDF8F025330   s65(r8).i64 = MOVZXW   [s58(rax).u64+2].u16
+7FDF8F025335   s7(r12).var = MOV      [s64(rdi).i64+s65(r8).i64*8].i64
+7FDF8F025339           JMP            $L7
+7FDF8F02533B  $L10:
+7FDF8F02533B           CMP            s59(rcx).u64, [s58(rax).u64].i64
+7FDF8F02533E           JNE            $L11
+7FDF8F025340   s66(rcx).i64 = MOVZXW  [s58(rax).u64+18].u16
+7FDF8F025345   s7(r12).var = MOV      [s8(rsi).var+s66(rcx).i64*8].i64
+7FDF8F025349           JMP            $L7
+7FDF8F02534B  $L11:
+7FDF8F02534B           CMP            s62(rdx).u64, [s58(rax).u64].i64
+7FDF8F02534E           JNE            $L8
+7FDF8F025354   s67(rcx).i64 = MOV     [s8(rsi).var+16].i64
+7FDF8F025358   s68(rax).i64 = MOVZXW  [s58(rax).u64+18].u16
+7FDF8F02535D   s7(r12).var = MOV      [s67(rcx).i64+s68(rax).i64*8].i64
+7FDF8F025361  $L7:
+
+
+ GLOBOPT INSTR:     s25.var         =  CallI          s7.var!, arg3(s24)<16>.var!             #0057
+
+
+7FDF8F025361   s46(rax).i64 = MOV     s7(r12).var!
+7FDF8F025364           NOP            2 (0x2).i8
+7FDF8F025366   s46(rax).i64 = SHR     s46(rax).i64, 48 (0x30).i8
+7FDF8F02536A           JNE            $L5
+7FDF8F025370  $L6:
+7FDF8F025370   s50(rax).i64 = MOV     [s7(r12).var+8].i64
+7FDF8F025375   s50(rax).i64 = MOV     [s50(rax).i64+24].u64
+7FDF8F025379   (rdi).i64 = MOV        s7(r12).var
+7FDF8F02537C   arg3(s24)(r8).var = MOV  s4(r14)[CanBeTaggedValue_Float].var!
+7FDF8F02537F   arg2(s23)(rcx).var = MOV  s51(rbx).u64
+7FDF8F025382   arg1(s22)(rdx).var = MOV  s8(rsi).var!
+7FDF8F025385   (rsi).i64 = MOV        33554435 (0x2000003).i64
+7FDF8F02538C   arg5(s53)<32>.i64 = MOV  (r8).i64
+7FDF8F025391   arg4(s54)<24>.i64 = MOV  (rcx).i64
+7FDF8F025396   arg3(s55)<16>.i64 = MOV  (rdx).i64
+7FDF8F02539B   arg2(s56)<8>.i64 = MOV  (rsi).i64
+7FDF8F0253A0   arg1(s57)<0>.i64 = MOV  (rdi).i64
+7FDF8F0253A4   s52(rax).var = CALL    s50(rax).i64
+7FDF8F0253A7   s25(rbx).var = MOV     s52(rax).var
+
+
+ GLOBOPT INSTR:                        CallI          s17.var!, arg2(s26)<8>.var!             #0064
+
+
+7FDF8F0253AA   s37(rax).i64 = MOV     s17(r15).var!
+7FDF8F0253AD   s37(rax).i64 = SHR     s37(rax).i64, 48 (0x30).i8
+7FDF8F0253B1           JNE            $L3
+7FDF8F0253B7  $L4:
+7FDF8F0253B7   s41(rax).i64 = MOV     [s17(r15).var+8].i64
+7FDF8F0253BB   s41(rax).i64 = MOV     [s41(rax).i64+24].u64
+7FDF8F0253BF   (rdi).i64 = MOV        s17(r15).var
+7FDF8F0253C2   arg2(s26)(rcx).var = MOV  s25(rbx).var!
+7FDF8F0253C5   arg1(s19)(rdx).var = MOV  s2(r13)[Undefined].var
+7FDF8F0253C8   (rsi).i64 = MOV        268435458 (0x10000002).i64
+7FDF8F0253CF   arg4(s42)<24>.i64 = MOV  (rcx).i64
+7FDF8F0253D4   arg3(s43)<16>.i64 = MOV  (rdx).i64
+7FDF8F0253D9   arg2(s44)<8>.i64 = MOV  (rsi).i64
+7FDF8F0253DE   arg1(s45)<0>.i64 = MOV  (rdi).i64
+7FDF8F0253E2           CALL           s41(rax).i64
+7FDF8F0253E5           StatementBoundary  #2
+7FDF8F0253E5           StatementBoundary  #-1
+
+
+ GLOBOPT INSTR:                        Ret            s2[Undefined].var!                      #006e
+
+
+7FDF8F0253E5   (rax).i64 = MOV        s2(r13)[Undefined].var!
+7FDF8F0253E8  $L16:
+7FDF8F0253E8   (rsp).i64 = ADD        (rsp).i64, 72 (0x48).i64
+7FDF8F0253EC   (rbx).i64 = POP
+7FDF8F0253EE   (r12).i64 = POP
+7FDF8F0253F0   (r13).i64 = POP
+7FDF8F0253F2   (r14).i64 = POP
+7FDF8F0253F4   (r15).i64 = POP
+7FDF8F0253F6   (rsp).i64 = MOV        (rbp).i64
+7FDF8F0253F9   (rbp).i64 = POP
+7FDF8F0253FB           RET            0 (0x0).i32, (rax).i64
+
+
+ GLOBOPT INSTR:                        FunctionExit                                           #
+
+
+7FDF8F0253FC           FunctionExit
+7FDF8F0253FC           StatementBoundary  #-1
+7FDF8F0253FC  $L39: [helper]
+7FDF8F0253FC   s178(rcx).var = MOV    s1(r12)[Object].var
+7FDF8F0253FF   arg6(s179)(r9).var = MOV  s177(rax).var
+7FDF8F025402   arg5(s180)(r8).u32 = MOV  718 (0x2CE).u32
+7FDF8F025408   arg3(s182)(rdx).u32 = MOV  4 (0x4).u32
+7FDF8F02540D   arg2(s183)(rsi).u64 = MOV  0x7FDF961FF110 (InlineCache).u64
+7FDF8F025417   arg1(s184)(rdi).u64 = MOV  0x7FDF8F08C000 (FunctionBody [Global code (#1.0), #1]).u64
+7FDF8F025421   s185(rax).u64 = MOV    Op_PatchInitValue.u64
+7FDF8F02542B           CALL           s185(rax).u64
+7FDF8F02542E           JMP            $L40
+7FDF8F025433
+
+  Line  27: var obj = AsmModule();
+  Col    1: ^
+                       StatementBoundary  #0
+7FDF8F025433  $L34: [helper]
+7FDF8F025433   s153(rcx).var = MOV    s1(r12)[Object].var
+7FDF8F025436   arg5(s155)(r8).u32 = MOV  718 (0x2CE).u32
+7FDF8F02543C   arg3(s157)(rdx).u32 = MOV  2 (0x2).u32
+7FDF8F025441   arg2(s158)(rsi).u64 = MOV  0x7FDF961FF0D0 (InlineCache).u64
+7FDF8F02544B   arg1(s159)(rdi).u64 = MOV  0x7FDF8F08C000 (FunctionBody [Global code (#1.0), #1]).u64
+7FDF8F025455   s160(rax).u64 = MOV    Op_PatchGetRootMethod.u64
+7FDF8F02545F   s154(rax).var = CALL   s160(rax).u64
+7FDF8F025462   s12(r15).var = MOV     s154(rax).var
+7FDF8F025465           JMP            $L33
+7FDF8F02546A
+
+  Line  27: var obj = AsmModule();
+  Col    1: ^
+                       StatementBoundary  #0
+7FDF8F02546A  $L31: [helper]
+7FDF8F02546A   arg2(s134)(rsi).u64 = MOV  0x5625164DD0E8 (ScriptContext).u64
+7FDF8F025474   arg1(s135)(rdi).u32 = MOV  -2146823286 (0x800A138A).u32
+7FDF8F025479   s136(rax).u64 = MOV    Op_RuntimeTypeError.u64
+7FDF8F025483           CALL           s136(rax).u64
+7FDF8F025486           JMP            $L32
+7FDF8F02548B
+
+  Line  27: var obj = AsmModule();
+  Col    1: ^
+                       StatementBoundary  #0
+7FDF8F02548B  $L27: [helper]
+7FDF8F02548B   s124(rcx).var = MOV    s1(r12)[Object].var
+7FDF8F02548E   arg7(s125)<0>.i32 = MOV  2 (0x2).i32
+7FDF8F025495   arg6(s126)(r9).var = MOV  s123(rax).var
+7FDF8F025498   arg5(s127)(r8).u32 = MOV  717 (0x2CD).u32
+7FDF8F02549E   arg3(s129)(rdx).u32 = MOV  5 (0x5).u32
+7FDF8F0254A3   arg2(s130)(rsi).u64 = MOV  0x7FDF961FF130 (InlineCache).u64
+7FDF8F0254AD   arg1(s131)(rdi).u64 = MOV  0x7FDF8F08C000 (FunctionBody [Global code (#1.0), #1]).u64
+7FDF8F0254B7   s132(rax).u64 = MOV    Op_PatchPutRootValueNoLocalFastPath.u64
+7FDF8F0254C1           CALL           s132(rax).u64
+7FDF8F0254C4           JMP            $L28
+7FDF8F0254C9
+
+  Line  28: print(obj.f3(1,1.5));
+  Col    1: ^
+                       StatementBoundary  #1
+7FDF8F0254C9  $L22: [helper]
+7FDF8F0254C9   s103(rcx).var = MOV    s1(r12)[Object].var
+7FDF8F0254CC   arg5(s105)(r8).u32 = MOV  711 (0x2C7).u32
+7FDF8F0254D2   arg3(s107)(rdx).u32 = MOV  3 (0x3).u32
+7FDF8F0254D7   arg2(s108)(rsi).u64 = MOV  0x7FDF961FF0F0 (InlineCache).u64
+7FDF8F0254E1   arg1(s109)(rdi).u64 = MOV  0x7FDF8F08C000 (FunctionBody [Global code (#1.0), #1]).u64
+7FDF8F0254EB   s110(rax).u64 = MOV    Op_PatchGetRootMethod.u64
+7FDF8F0254F5   s104(rax).var = CALL   s110(rax).u64
+7FDF8F0254F8   s17(r15).var = MOV     s104(rax).var
+7FDF8F0254FB           JMP            $L21
+7FDF8F025500
+
+  Line  28: print(obj.f3(1,1.5));
+  Col    1: ^
+                       StatementBoundary  #1
+7FDF8F025500  $L18: [helper]
+7FDF8F025500   s199<-8>.i64 = MOV     (rax).i64
+7FDF8F025504   s84(rcx).var = MOV     s1(r12)[Object].var
+7FDF8F025507   arg5(s86)(r8).u32 = MOV  717 (0x2CD).u32
+7FDF8F02550D   arg3(s88)(rdx).u32 = MOV  1 (0x1).u32
+7FDF8F025512   arg2(s89)(rsi).u64 = MOV  0x7FDF961FF0B0 (InlineCache).u64
+7FDF8F02551C   arg1(s90)(rdi).u64 = MOV  0x7FDF8F08C000 (FunctionBody [Global code (#1.0), #1]).u64
+7FDF8F025526   s91(rax).u64 = MOV     Op_PatchGetRootValue.u64
+7FDF8F025530   s85(rax).var = CALL    s91(rax).u64
+7FDF8F025533   s8(rsi).var = MOV      s85(rax).var
+7FDF8F025536   (rax).i64 = MOV        s199<-8>.i64
+7FDF8F02553A           JMP            $L17
+7FDF8F02553F
+
+  Line  28: print(obj.f3(1,1.5));
+  Col    1: ^
+                       StatementBoundary  #1
+7FDF8F02553F  $L14: [helper]
+7FDF8F02553F  $L15: [helper]
+7FDF8F02553F   arg1(s198)<0>.i64 = MOV  s28(rax).i64
+7FDF8F025543   (rdi).u64 = MOV        0x5625164EE9A0 (BailOutRecord).u64
+7FDF8F02554D   (rax).u64 = MOV        SaveAllRegistersAndBailOut.u64
+7FDF8F025557           CALL           (rax).u64                                      Bailout: #0043 (BailOutOnTaggedValue)
+7FDF8F02555A           JMP            $L16
+7FDF8F02555F
+
+  Line  28: print(obj.f3(1,1.5));
+  Col    1: ^
+                       StatementBoundary  #1
+7FDF8F02555F  $L8: [helper]
+7FDF8F02555F   s199<-8>.i64 = MOV     (rsi).i64
+7FDF8F025563   s69(rcx).var = MOV     s8(rsi).var
+7FDF8F025566   arg5(s71)(r8).u32 = MOV  716 (0x2CC).u32
+7FDF8F02556C   arg3(s73)(rdx).u32 = XOR  arg3(s73)(rdx).u32, arg3(s73)(rdx).u32
+7FDF8F02556E   arg2(s74)(rsi).u64 = MOV  0x7FDF961FF090 (InlineCache).u64
+7FDF8F025578   arg1(s75)(rdi).u64 = MOV  0x7FDF8F08C000 (FunctionBody [Global code (#1.0), #1]).u64
+7FDF8F025582   s76(rax).u64 = MOV     Op_PatchGetMethod.u64
+7FDF8F02558C   s70(rax).var = CALL    s76(rax).u64
+7FDF8F02558F   s7(r12).var = MOV      s70(rax).var
+7FDF8F025592   (rsi).i64 = MOV        s199<-8>.i64
+7FDF8F025596           JMP            $L7
+7FDF8F02559B
+
+  Line  28: print(obj.f3(1,1.5));
+  Col    1: ^
+                       StatementBoundary  #1
+7FDF8F02559B  $L5: [helper]
+7FDF8F02559B   s199<-8>.i64 = MOV     (rsi).i64
+7FDF8F02559F   arg2(s47)(rsi).u64 = MOV  0x5625164DD0E8 (ScriptContext).u64
+7FDF8F0255A9   arg1(s48)(rdi).u32 = MOV  -2146823286 (0x800A138A).u32
+7FDF8F0255AE   s49(rax).u64 = MOV     Op_RuntimeTypeError.u64
+7FDF8F0255B8           CALL           s49(rax).u64
+7FDF8F0255BB   (rsi).i64 = MOV        s199<-8>.i64
+7FDF8F0255BF           JMP            $L6
+7FDF8F0255C4
+
+  Line  28: print(obj.f3(1,1.5));
+  Col    1: ^
+                       StatementBoundary  #1
+7FDF8F0255C4  $L3: [helper]
+7FDF8F0255C4   arg2(s38)(rsi).u64 = MOV  0x5625164DD0E8 (ScriptContext).u64
+7FDF8F0255CE   arg1(s39)(rdi).u32 = MOV  -2146823286 (0x800A138A).u32
+7FDF8F0255D3   s40(rax).u64 = MOV     Op_RuntimeTypeError.u64
+7FDF8F0255DD           CALL           s40(rax).u64
+7FDF8F0255E0           JMP            $L4
+7FDF8F0255E5           StatementBoundary  #-1
+7FDF8F0255E5  $L43: [helper]
+7FDF8F0255E5   (rsi).i64 = MOV        0x5625164DD0E8 (ScriptContext).u64
+7FDF8F0255EF   (rdi).i64 = MOV        7184 (0x1C10).i64
+7FDF8F0255F6   (rax).i64 = MOV        ProbeCurrentStack.u64
+7FDF8F025600           JMP            (rax).i64
+7FDF8F025603           StatementBoundary  #-1
+-----------------------------------------------------------------------------
+Function f3 ( (#1.2), #3)                         Instr Count:45		Size:154
+
+7FDF8F025800           FunctionEntry
+7FDF8F025800   (rax).i64 = MOV        0x5625164A9360 (&StackLimit).u64
+7FDF8F02580A   (rax).i64 = MOV        [(rax).i64].i64
+7FDF8F02580D   (rax).i64 = ADD        (rax).i64, 7136 (0x1BE0).i64
+7FDF8F025814           JO             $L4
+7FDF8F025816           CMP            (rsp).i64, (rax).i64
+7FDF8F025819           JLE            $L4
+7FDF8F02581B           NOP            3 (0x3).i8
+7FDF8F02581E           NOP            4 (0x4).i8
+7FDF8F025822           NOP            2 (0x2).i8
+7FDF8F025824           PrologStart
+7FDF8F025824           PUSH           (rbp).i64
+7FDF8F025826   (rbp).i64 = MOV        (rsp).i64
+7FDF8F025829   (rsp).i64 = SUB        (rsp).i64, 16 (0x10).i64
+7FDF8F02582D           PUSH           (r15).i64
+7FDF8F02582F   (rsp).i64 = SUB        (rsp).i64, 56 (0x38).i64
+7FDF8F025833           PrologEnd
+
+
+ GLOBOPT INSTR:     s1.var          =  LdAsmJsEnv                                             #
+
+
+7FDF8F025833   s27(rax).u64 = MOV     0x5625164F43B0 (&(double)1.100000).u64
+7FDF8F02583D   s28(rcx).u64 = MOV     s29<16>.u64
+7FDF8F025841   s1(rcx).var = MOV      [s28(rcx).u64+88].u64
+
+
+ GLOBOPT INSTR:     s11.f64         =  LdC_F8_R8      1.1.f64                                 #
+
+
+7FDF8F025845   s11(xmm2).f64 = MOVSD  [s27(rax).u64 <0x5625164F43B0 (&(double)1.100000)>].f64
+7FDF8F02584A
+
+  Line  14: bar(1,1.1);
+  Col   17: ^
+                       StatementBoundary  #0
+
+
+ GLOBOPT INSTR:     s0.var          =  LdSlot         s21(s1[24]).var!                        #0009
+
+
+7FDF8F02584A   s0(rdi).var = MOV      [s1(rcx).var+24].var
+
+
+ GLOBOPT INSTR:     s10.f64         =  AsmJsCallI     s0.var!, arg2(s20)<8>.f64!              #0010
+
+
+7FDF8F02584E   s22(rax).i64 = MOV     [s0(rdi).var!+8].i64
+7FDF8F025852   s22(rax).i64 = MOV     [s22(rax).i64+56].i64
+7FDF8F025856   s22(rax).i64 = MOV     [s22(rax).i64+24].i64
+7FDF8F02585A   arg1(s19)(rsi).u32 = MOV  1 (0x1).u32
+7FDF8F02585F   arg3(s24)<16>.i64 = MOV  (rdx).i64
+7FDF8F025864   arg2(s25)<8>.i64 = MOV  (rsi).i64
+7FDF8F025869   arg1(s26)<0>.i64 = MOV  (rdi).i64
+7FDF8F02586D   s23(xmm0).f64 = CALL   s22(rax).i64
+7FDF8F025870
+
+  Line  14: return +bar(1,1.1);
+  Col    9: ^
+                       StatementBoundary  #1
+7FDF8F025870
+
+  Line  15: }
+  Col    5: ^
+                       StatementBoundary  #2
+7FDF8F025870   (rsp).i64 = ADD        (rsp).i64, 56 (0x38).i64
+7FDF8F025874   (r15).i64 = POP
+7FDF8F025876   (rsp).i64 = MOV        (rbp).i64
+7FDF8F025879   (rbp).i64 = POP
+7FDF8F02587B           RET            0 (0x0).i32, (xmm0).f64
+
+
+ GLOBOPT INSTR:                        FunctionExit                                           #
+
+
+7FDF8F02587C           FunctionExit
+7FDF8F02587C  $L4: [helper]
+7FDF8F02587C   (rsi).i64 = MOV        0x5625164DD0E8 (ScriptContext).u64
+7FDF8F025886   (rdi).i64 = MOV        7136 (0x1BE0).i64
+7FDF8F02588D   (rax).i64 = MOV        ProbeCurrentStack.u64
+7FDF8F025897           JMP            (rax).i64
+7FDF8F02589A           StatementBoundary  #-1
+-----------------------------------------------------------------------------
+Function bar ( (#1.3), #4)                        Instr Count:17		Size:34
+
+7FDF8F025900           FunctionEntry
+7FDF8F025900           PrologStart
+7FDF8F025900           PUSH           (rbp).i64
+7FDF8F025902   (rbp).i64 = MOV        (rsp).i64
+7FDF8F025905   (rsp).i64 = SUB        (rsp).i64, 80 (0x50).i64
+7FDF8F025909           PrologEnd
+
+
+ GLOBOPT INSTR:     s11.f64         =  ArgIn_A        prm2<32>.f64!                           #
+
+
+7FDF8F025909   s11(xmm0).f64 = MOVSD  prm2<32>.f64!
+7FDF8F02590F
+
+  Line  21: d * d)
+  Col   20: ^
+                       StatementBoundary  #0
+
+
+ GLOBOPT INSTR:     s12.f64         =  Mul_A          s11.f64!, s11.f64                       #0000
+
+
+7FDF8F02590F   s12(xmm1).f64 = MOVAPS  s11(xmm0).f64!
+7FDF8F025913   s12(xmm1).f64 = MULSD  s12(xmm1).f64, s11(xmm0).f64
+7FDF8F025918
+
+  Line  21: return  + (d * d)
+  Col    9: ^
+                       StatementBoundary  #1
+7FDF8F025918
+
+  Line  22: }
+  Col    5: ^
+                       StatementBoundary  #2
+
+
+ GLOBOPT INSTR:                        Ret            s12.f64!                                #000d
+
+
+7FDF8F025918   (xmm0).f64 = MOVAPS    s12(xmm1).f64!
+7FDF8F02591C   (rsp).i64 = MOV        (rbp).i64
+7FDF8F02591F   (rbp).i64 = POP
+7FDF8F025921           RET            0 (0x0).i32, (xmm0).f64
+
+
+ GLOBOPT INSTR:                        FunctionExit                                           #
+
+
+7FDF8F025922           FunctionExit
+2.25
+xjc@ubun:~/core$
