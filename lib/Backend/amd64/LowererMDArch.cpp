@@ -376,7 +376,7 @@ LowererMDArch::LoadHeapArguments(IR::Instr *instrArgs)
             // s2 = actual argument count (without counting "this")
             instr = this->lowererMD->LoadInputParamCount(instrArgs, -1);
             IR::Opnd * opndInputParamCount = instr->GetDst();
-            
+
             this->LoadHelperArgument(instrArgs, opndInputParamCount);
 
             // s1 = current function
@@ -522,6 +522,16 @@ LowererMDArch::LowerCallArgs(IR::Instr *callInstr, ushort callFlags, Js::ArgSlot
         argInstr->Unlink();
         callInstr->InsertBefore(argInstr);
         argCount++;
+
+#ifndef _WIN32  // home the arg
+        if (dstOpnd->IsRegOpnd())
+        {
+            StackSym* sym = this->m_func->m_symTable->GetArgSlotSym(index);
+            Lowerer::InsertMove(
+                IR::SymOpnd::New(sym, TyMachReg, this->m_func),
+                dstOpnd, callInstr, false);
+        }
+#endif
     }
 
 
@@ -946,34 +956,21 @@ LowererMDArch::LowerCall(IR::Instr * callInstr, uint32 argCount)
         uint16 index = _V_ARG_INDEX(argsLeft);
         StackSym * helperSym = m_func->m_symTable->GetArgSlotSym(index);
         helperSym->m_type = ExtendHelperArg(helperSrc->GetType());
-        Lowerer::InsertMove(
-            this->GetArgSlotOpnd(index, helperSym, /*isHelper*/!shouldHomeParams),
-            helperSrc,
-            callInstr, false);
-        --argsLeft;
-    }
+        IR::Opnd* dstOpnd = this->GetArgSlotOpnd(index, helperSym, /*isHelper*/!shouldHomeParams);
+        Lowerer::InsertMove(dstOpnd, helperSrc, callInstr, false);
 
-#ifndef _WIN32
-    // Manually home args
-    if (shouldHomeParams)
-    {
-        static const RegNum s_argRegs[IntArgRegsCount] = {
-    #define REG_INT_ARG(Index, Name)  Reg ## Name,
-    #include "RegList.h"
-        };
-
-        const int callArgCount = this->helperCallArgsCount + static_cast<int>(argCount);
-        const int argRegs = min(callArgCount, static_cast<int>(IntArgRegsCount));
-        for (int i = argRegs - 1; i >= 0; i--)
+#ifndef _WIN32  // home the arg
+        if (shouldHomeParams && dstOpnd->IsRegOpnd())
         {
-            StackSym * sym = this->m_func->m_symTable->GetArgSlotSym(static_cast<uint16>(i + 1));
+            StackSym* sym = this->m_func->m_symTable->GetArgSlotSym(argsLeft);
             Lowerer::InsertMove(
                 IR::SymOpnd::New(sym, TyMachReg, this->m_func),
-                IR::RegOpnd::New(nullptr, s_argRegs[i], TyMachReg, this->m_func),
-                callInstr, false);
+                dstOpnd, callInstr, false);
         }
-    }
 #endif
+
+        --argsLeft;
+    }
 
     //
     // load the address into a register because we cannot directly access 64 bit constants
