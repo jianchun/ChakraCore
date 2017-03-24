@@ -524,12 +524,12 @@ LowererMDArch::LowerCallArgs(IR::Instr *callInstr, ushort callFlags, Js::ArgSlot
         argCount++;
 
 #ifndef _WIN32  // home the arg
+        dstOpnd = argInstr->GetDst();
         if (dstOpnd->IsRegOpnd())
         {
-            StackSym* sym = this->m_func->m_symTable->GetArgSlotSym(index);
-            Lowerer::InsertMove(
-                IR::SymOpnd::New(sym, TyMachReg, this->m_func),
-                dstOpnd, callInstr, false);
+            MovArgFromReg2Stack(callInstr->GetPrevRealInstr(),
+                dstOpnd->AsRegOpnd()->GetReg(), index - 1,
+                argLinkSym->GetType());
         }
 #endif
     }
@@ -962,10 +962,9 @@ LowererMDArch::LowerCall(IR::Instr * callInstr, uint32 argCount)
 #ifndef _WIN32  // home the arg
         if (shouldHomeParams && dstOpnd->IsRegOpnd())
         {
-            StackSym* sym = this->m_func->m_symTable->GetArgSlotSym(argsLeft);
-            Lowerer::InsertMove(
-                IR::SymOpnd::New(sym, TyMachReg, this->m_func),
-                dstOpnd, callInstr, false);
+            MovArgFromReg2Stack(callInstr->GetPrevRealInstr(),
+                dstOpnd->AsRegOpnd()->GetReg(), argsLeft - 1,
+                helperSym->GetType());
         }
 #endif
 
