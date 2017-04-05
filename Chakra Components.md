@@ -67,6 +67,20 @@ buffer overrun. `~Segment` releases its pages.
     size_t segmentPageCount;
 ```
 
+Properties:
+
+ - `PageCount`: all page count (excluding guard pages). Including pages
+ available to user and secondary pages.
+
+ - `AvailablePageCount`: pages available to user (excluding
+ secondaryAllocPageCount).
+
+ - `Address`: user pages starting address.
+
+ - `EndAddress`: user pages ending address, same as secondary pages starting
+ address.
+
+
 `PageSegment` extends `Segment` to support page level access. It records free
 or decommitted pages. User can allocate/release pages, or decommit/allocate
 again (either free or decommited).
@@ -79,9 +93,6 @@ again (either free or decommited).
 ```
 
 Some properties:
-
- - `AvailablePageCount`: pages available to user (excluding
-   secondaryAllocPageCount).
 
  - `IsEmpty`: All available pages are free.
 
@@ -149,7 +160,11 @@ front.
     exceed `maxFreePageCount` (default 1024 --> 4MB, but 0 for thread page
     allocator), create a new decommit segment and allocate from it.
 
-    4. Finally allocate a new empty segment and allocate from it.
+    4. Otherwise allocate a new empty segment and allocate from it.
+
+`void ReleaseAllocation(PageAllocation * allocation)`
+
+    Call `Release` with allocation->pageCount/segment info.
 
 `void Release(void * address, size_t pageCount, void * segmentParam)`
 
@@ -158,4 +173,10 @@ front.
 
 `void ReleasePages(void * address, uint pageCount, void * segmentParam)`
 
+    If adding these pages to free page pool exceeds `maxFreePageCount`, either
+    release a whole empty segment (to reduce the number of VirtualFree and
+    fragmentation) and add the pages to free pool if possible, or just decommit
+    the pages to reduce working set.
 
+    Otherwise either queue zero pages if allowed, or zero them and add to free
+    page pool right away.
