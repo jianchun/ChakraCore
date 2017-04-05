@@ -44,7 +44,7 @@ constructor.
 
 ## GC Components
 
-`ThreadContext` keeps a `IdleDecommitPageAllocator pageAllocator` using the
+`ThreadContext` keeps a `IdleDecommitPageAllocator pageAllocator` using its
 allocationPolicyManager. `Recycler` uses it as `threadPageAllocator`, also 3
 other `RecyclerPageAllocator`:
 
@@ -78,5 +78,84 @@ again (either free or decommited).
     uint     decommitPageCount;
 ```
 
+Some properties:
+
+ - `AvailablePageCount`: pages available to user (excluding
+   secondaryAllocPageCount).
+
+ - `IsEmpty`: All available pages are free.
+
+ - `IsAllDecommitted`: All available pages are decommited.
+
+ - `ShouldBeInDecommittedList`: Has some decommited pages.
+
+ - `IsFull`: No free pages and no decommited pages (cannot allocate).
+
 A `PageSegment` supports maximum 256 pages (1MB), plus maximum 16 guard pages.
+
+
+A `PageAllocation` records info about an allocation from a `Segment` in the
+front.
+
+```
+    {pageCount, segment}----+------------------------
+    ^                       ^
+    |                       |
+    pageAllocation          address, size
+```
+
+
+### `PageAllocator`
+
+`PageAllocator` manages page segments.
+
+```c
+    DListBase<TPageSegment> segments;
+    DListBase<TPageSegment> fullSegments;
+    DListBase<TPageSegment> emptySegments;
+    DListBase<TPageSegment> decommitSegments;
+
+    DListBase<TSegment> largeSegments;
+```
+
+`PageAllocation* AllocPagesForBytes(size_t requestBytes)`
+
+    `AllocAllocation` pages to hold `PageAllocation + requestBytes`.
+
+`PageAllocation* AllocAllocation(size_t pageCount)`
+
+    If `pageCount` exceeds `maxAllocPageCount` (default 32 pages --> 128KB),
+    allocate a new large segment for it. Otherwise `AllocPages`.
+
+`char* AllocPages(uint pageCount, TPageSegment ** pageSegment)`
+
+    1. `TryAllocFreePages`
+
+    2. `SnailAllocPages`
+
+`char* TryAllocFreePages(uint pageCount, TPageSegment ** pageSegment)`
+
+    1. Try allocate from one of `this->segments`.
+
+    2. Try allocate from background zero or free page queue.
+
+`char* SnailAllocPages(uint pageCount, TPageSegment ** pageSegment)`
+
+    1. Try scan and allocate from one of `this->emptySegments`.
+
+    2. Try scan and allocate from one of `this->decommitSegments`.
+
+    3. If allocating `maxAllocPageCount` is going to create new free pages and
+    exceed `maxFreePageCount` (default 1024 --> 4MB, but 0 for thread page
+    allocator), create a new decommit segment and allocate from it.
+
+    4. Finally allocate a new empty segment and allocate from it.
+
+`void Release(void * address, size_t pageCount, void * segmentParam)`
+
+    If `pageCount` exceeds `maxAllocPageCount`, `ReleaseSegment` (from
+    `this->largeSegments`). Otherwise `ReleasePages`.
+
+`void ReleasePages(void * address, uint pageCount, void * segmentParam)`
+
 
