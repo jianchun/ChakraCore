@@ -180,3 +180,70 @@ front.
 
     Otherwise either queue zero pages if allowed, or zero them and add to free
     page pool right away.
+
+
+### `IdleDecommitPageAllocator`
+
+Support idle decommit.
+
+```
+ThreadContext::EnterScriptStart
+ -> recycler->EnterIdleDecommit()
+  -> each pageAllocator->EnterIdleDecommit()
+
+ThreadContext::EnterScriptEnd
+ -> recycler->LeaveIdleDecommit()
+  -> each pageAllocator->LeaveIdleDecommit()
+```
+
+LeaveIdleDecommit(): When a pageAllocator determines it needs idle decommit,
+recycler will fire `this->concurrentIdleDecommitEvent` to wake up background
+thread to do the work. (Except when idle decommit not enabled, or if
+threadService present, LeaveIdleDecommit will DecommitNow in thread instead.)
+
+Properties:
+
+ - `isUsed`: Track if this page allocator did any allocation during current
+ enter/leave script session. Used as a heuristics factor.
+
+ - `maxFreePageCount`: Toggles between max idle count (OnEnter, default to 4MB)
+ and non-idle count (OnLeave if nothing to decommit and not used, default to
+ 0). Setting to larger idle count for in-script to reduce in-script decommit.
+
+ - `decommitTime`: Desired decommit time, computed OnLeave to be 1 second in
+ future if `isUsed`.
+
+ - `hasDecommitTimer`: Track if OnLeave has indicated needs timer (or signal)
+ for idle decommit. Passes down to `hadDecommitTimer` to affect scheduling.
+
+Related functions:
+
+`void Recycler::EnterIdleDecommit()`
+
+    1. Each pageAllocator->EnterIdleDecommit()
+
+    2. Reset `needIdleDecommitSignal` to `IdleDecommitSignal_None` if it was
+    `IdleDecommitSignal_NeedTimer` (will recompute OnLeave). No change if it
+    was `IdleDecommitSignal_NeedSignal`.
+
+`void Recycler::LeaveIdleDecommit()`
+
+    1. Each pageAllocator->LeaveIdleDecommit()
+
+    2. If any pageAllocator indicates need signal (to decommit now), or if any
+    pageAllocator needs timer (to decommit in future) but background thread
+    missed that and was waiting INFINITE, fire `concurrentIdleDecommitEvent`
+    event to wake up background thread.
+
+`DWORD Recycler::ThreadProc()`
+
+    Do background thread work. Each pageAllocator->IdleDecommit() either
+    DecommitNow() or returns waitTime for future. Compute the min waitTime,
+    wait on it; if min waitTime is INFINITE, change `needIdleDecommitSignal` to
+    indicate it needs signal to wake up (or if `needIdleDecommitSignal` changed
+    already, restart work loop immediately).
+
+`DWORD IdleDecommitPageAllocator::IdleDecommit()`
+
+    Called by and run on background thread. Either DecommitNow() or compute a
+    waitTime to retry in future.
