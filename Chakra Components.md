@@ -247,3 +247,9 @@ Related functions:
 
     Called by and run on background thread. Either DecommitNow() or compute a
     waitTime to retry in future.
+
+
+### `RecyclerPageAllocator`
+
+Extends `IdleDecommitPageAllocator` to add write watch functions (reset, get
+touched pages).
