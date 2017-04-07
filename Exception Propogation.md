@@ -254,3 +254,49 @@ HRESULT ScriptEngine::ExecutePendingScripts(VARIANT *pvarRes, EXCEPINFO *pei)
 
 Change the test to `samethread`, then we hit above `CrossSite::CommonThunk`
 path.
+
+Change the echo function to throw an exception, we can see how the exception
+propogates to caller script.
+
+```
+0:005> !jd.jstack
+ #
+00 chakra!DispatchExCaller::CanHandleException+0x575
+01 RPCRT4!Invoke+0x73
+...
+07 combase!DefaultStubInvoke+0x216
+...
+0e user32!DispatchMessageWorker+0x19f
+...
+14 combase!ClassicSTAThreadDispatchCrossApartmentCall+0x59
+...
+18 combase!NdrExtpProxySendReceive+0xec
+19 RPCRT4!NdrpClientCall3+0x423
+1a RPCRT4!NdrClientCall3+0xed
+1b dispex!IDispatchEx_InvokeEx_Proxy+0x127
+1c chakra!HostDispatch::CallInvokeExInternal+0x345
+1d chakra!HostDispatch::CallInvokeHandler+0x131
+1e chakra!HostDispatch::CallInvokeEx+0xc8
+1f chakra!HostDispatch::InvokeMarshaled+0xda
+20 chakra!HostDispatch::InvokeByDispId+0xd61
+21 chakra!DispMemberProxy::DefaultInvoke+0x176
+22 chakra!amd64_CallFunction+0x86
+23 chakra!Js::JavascriptFunction::CallFunction<1>+0xd7
+...
+2b js!foo (#1.1, #2) [Interpreter 0x000000130a5fcfd0]
+...
+34 chakra!Js::InterpreterStackFrame::InterpreterThunk+0x98
+35 js!Global code (#1.0, #1) [Interpreter 0x000000130a5fda80]
+...
+3a chakra!ScriptSite::CallRootFunction+0x1a2
+3b chakra!ScriptSite::Execute+0x570
+3c chakra!ScriptEngine::ExecutePendingScripts+0x43b
+3d chakra!ScriptEngine::ParseScriptTextCore+0xd63
+3e chakra!ScriptEngine::ParseScriptText+0x2dc
+3f JSHOST!JsHostActiveScriptSite::LoadScriptFromString+0x2bf
+40 JSHOST!JsHostActiveScriptSite::LoadScriptFromFile+0x10de
+```
+
+The top frame's handler `DispatchExCaller` is the instance passed by frame
+`chakra!HostDispatch::CallInvokeExInternal+0x345`. So the exception thrown by
+the callee script is propogated and recorded by caller script engine.
