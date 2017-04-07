@@ -1,5 +1,5 @@
-Exception Propogate
-===================
+Exception Propogation
+=====================
 
 Chakra maintains a caller stack manually to support exception propogation
 across script engine.
@@ -147,4 +147,110 @@ HRESULT ScriptSite::ReportError(...)
 
     Set new `m_punkCaller`. Clears cache `currentDispatchExCaller` if exists.
 
-`SetCaller` is only used in `CrossSite`.
+`SetCaller` is only called by `CrossSite::CommonThunk`.
+
+```c++
+Var CrossSite::CommonThunk(RecyclableObject* function, ...)
+
+    HostScriptContext* calleeHostScriptContext =
+        targetScriptContext->GetHostScriptContext();
+    HostScriptContext* callerHostScriptContext =
+        targetScriptContext->GetThreadContext()->GetPreviousHostScriptContext();
+                                                    // stack top
+
+    // We need to setup the caller chain when we go across script site
+    // boundary. Property access is OK, and we need to let host know who the
+    // caller is when a call is from another script site. CrossSiteObject is
+    // the natural place but it is in the target site. We build up the site
+    // chain through PushDispatchExCaller/PopDispatchExCaller, and we call
+    // SetCaller in the target site to indicate who the caller is. We first
+    // need to get the site from the previously pushed site and set that as the
+    // caller for current call, and push a new DispatchExCaller for future
+    // calls off this site. GetDispatchExCaller and ReleaseDispatchExCaller is
+    // used to get the current caller. currentDispatchExCaller is cached to
+    // avoid multiple allocations.
+    TryFinally([&]()
+    {
+        hr = callerHostScriptContext->GetDispatchExCaller(
+                (void**)&sourceCaller);
+
+        if (SUCCEEDED(hr))
+        {
+            hr = calleeHostScriptContext->SetCaller(
+                (IUnknown*)sourceCaller, (IUnknown**)&previousSourceCaller);
+        }
+
+        if (SUCCEEDED(hr))
+        {
+            wasCallerSet = TRUE;
+            hr = calleeHostScriptContext->PushHostScriptContext();
+                    // now callee becomes the stack top caller
+        }
+
+        result = JavascriptFunction::CallFunction<true>(function, ...);
+        ...
+    },
+    [&](bool hasException)
+    {
+        ...
+            callerHostScriptContext->ReleaseDispatchExCaller(sourceCaller);
+        ...
+        if (wasDispatchExCallerPushed)
+        {
+            calleeHostScriptContext->PopHostScriptContext();
+        }
+        if (wasCallerSet)
+        {
+            calleeHostScriptContext->SetCaller(previousSourceCaller, ...);
+```
+
+## HostDispatch, JavascriptDispatch -- crossthread
+
+Test with jshost.
+
+testcrossother.js:
+
+```javascript
+    function echo() { print.apply(this, arguments); }
+```
+
+testcross.js:
+
+```javascript
+    function foo() {
+        var other = WScript.LoadScriptFile('testcrossother.js', 'crossthread');
+        other.echo('Hello', 'cross thread');
+    }
+    foo();
+```
+
+The call actually goes through HostDispatch and passes caller to DispatchEx.
+
+```c++
+HRESULT HostDispatch::CallInvokeExInternal(...)
+
+    hr = this->scriptSite->GetDispatchExCaller(&pdc);
+    ...
+    hr = pDispEx->InvokeEx(id, lcid, wFlags, pdp, pvarRes, pei, pdc);
+    ...
+    this->scriptSite->ReleaseDispatchExCaller(pdc);
+```
+
+```c++
+HRESULT JavascriptDispatch::InvokeEx(..., IServiceProvider *  pspCaller)
+
+        AutoCallerPointer callerPointer(scriptSite, pspCaller);
+```
+
+The initial caller was set by following, although weirdly that caller is of
+`JsHostActiveScriptSite` type and implements neither IServiceProvider nor
+ICanHandleException.
+
+```c++
+HRESULT ScriptEngine::ExecutePendingScripts(VARIANT *pvarRes, EXCEPINFO *pei)
+
+    AutoCallerPointer callerPointer(GetScriptSiteHolder(), m_pActiveScriptSite);
+```
+
+Change the test to `samethread`, then we hit above `CrossSite::CommonThunk`
+path.
