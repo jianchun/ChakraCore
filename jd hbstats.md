@@ -101,6 +101,13 @@ chunks represents 4GB space.
 For each address, the lower 32 bits determines chunk mapping. Top 12 bits
 (4096), id1, maps to a L2 chunk. Middle 8 bits (256), id2, maps to a HeapBlock.
 
+Note:
+ * HeapBlockMap assists quickly finding any address's HeapBlock. A HeapBlock
+   may contain multiple pages, thus could span multiple HBM nodes, chunks, or
+   entires.
+ * `RemoteHeapBlockMap::ForEachHeapBlock` avoids repeats by only enumerate
+   when the entry address matches HeapBlock's starting address.
+
 ## RemoteHeapBlock
 
 `RemoteHeapBlock()` constructor reads HeapBlock `heapBlockType`, `address`, and
@@ -135,7 +142,8 @@ allocated object count / size:
     ...
   ```
 
-- SmallHeapBlock: Subtract free objects from total objects. Search
-  heapBlock.heapBucket.allocatorHead list for this heapBlock. Between
-  allocator.freeObjectList and allocator.endAddress are free objects.
-
+- SmallHeapBlock: Subtract free objects from total objects.
+ * Search heapBlock.heapBucket.allocatorHead list for this heapBlock. Between
+   allocator.freeObjectList and allocator.endAddress are free objects.
+ * Otherwise the heapBlock is not in allocator. Walk heapBlock.freeObjectList
+   for free objects.
